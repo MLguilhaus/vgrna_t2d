@@ -1,0 +1,5 @@
+.snakemake
+data/*
+workflow/logs/*
+workflow/slurm/*
+

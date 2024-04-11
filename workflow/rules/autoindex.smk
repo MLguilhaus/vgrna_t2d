@@ -1,12 +1,12 @@
 rule autoindex:
     input:
-         gfa = graph_path
-         gtf = gtf_path
+         gfa = graph_path,
+         gtf = gtf_path,
 
     output: 
-    gcsa    = os.path.join(index_outpath, "vg_rna.spliced.gcsa"),
-    xg      = os.path.join(index_outpath, "vg_rna.spliced.xg"),
-    dist    = os.path.join(index_outpath, "vg_rna.spliced.dist")
+        gcsa = os.path.join(index_outpath, "vg_rna.spliced.gcsa"),
+        xg = os.path.join(index_outpath, "vg_rna.spliced.xg"),
+        dist = os.path.join(index_outpath, "vg_rna.spliced.dist")
 
     conda: "../envs/autoindex.yml"
     log: os.path.join(log_path, "autoindex", "autoindex.log") 
@@ -17,7 +17,7 @@ rule autoindex:
     threads: 16
     resources:
         runtime = "10h",
-        mem_mb = 120000,
+        mem_mb = 140000,
         disk_mb = 10000
     shell:
         """
