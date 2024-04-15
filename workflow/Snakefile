@@ -20,23 +20,32 @@ wildcard_constraints:
 	accession = "(" + '|'.join(accessions) + ")",
 
 # All subsequent paths
-graph_path = ("/hpcfs/users/a1627307/genome/hprc-v1.1-mc-grch38.gfa")
+gfa_path = ("/hpcfs/users/a1627307/genome/hprc-v1.1-mc-grch38.gfa")
 gtf_path = ("/hpcfs/users/a1627307/genome/gencode.v45.primary_assembly.annotation.gtf")
 # trim_path = os.path.join("hpcfs", "users", "a1627307", 
 # 						"star_t2d", "star_t2d", "data", "fastq", "trimmed")
 log_path = os.path.join("workflow", "logs")
-index_outpath = os.path.join("data", "index")
+pg_outpath  = os.path.join("data", "graph")
+# index_outpath = os.path.join("data", "index")
 # mpmap_outpath = os.path.join("data", "mpmap")
 # mpmaplog_path = os.path.join("output", "mpmap")
 
-ALL_INDEX = expand(
-	os.path.join(index_outpath, "vg_rna.spliced.{suffix}"),
-	suffix = ['gcsa', 'xg', 'dist'])
+# ALL_INDEX = expand(
+# 	os.path.join(index_outpath, "vg_rna.spliced.{suffix}"),
+# 	suffix = ['gcsa', 'xg', 'dist'])
+
+ALL_CONVERT = expand(
+	os.path.join(pg_outpath, "hprc-v1.1-mc-grch38.{suffix}"),
+	suffix = ['pg']
+)
 
 ALL_OUTPUTS = []
-ALL_OUTPUTS.extend(ALL_INDEX)
+# ALL_OUTPUTS.extend(ALL_INDEX)
+ALL_OUTPUTS.extend(ALL_CONVERT)
 
 rule all:
 	input:
 		ALL_OUTPUTS
-include: "rules/autoindex.smk"
+
+# include: "rules/autoindex.smk"
+include: "rules/convert.smk"

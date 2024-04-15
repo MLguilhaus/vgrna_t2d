@@ -13,31 +13,34 @@ rule autoindex:
     params:
         workflow = config['autoindex']['workflow'],
         out_prefix = os.path.join(index_outpath, "vg_rna"),
-        temp_dir = os.path.join(index_outpath, "_indextmp")
+        #temp_dir = os.path.join(index_outpath, "_indextmp")
     threads: 16
     resources:
         runtime = "10h",
-        mem_mb = 140000,
-        disk_mb = 10000
+        mem_mb = 180000,
+
     shell:
         """
+        echo -e "starting at $(date)" > {log}
+
         vg autoindex \
             --workflow {params.workflow} \
             --threads {threads} \
             -prefix {params.out_prefix} \
             --gfa {input.gfa} \
             --tx-gff {input.gtf} \
-            --tmp-dir {params.temp_dir}
+            --verbosity 2 &>> {log}
+
+        """
+        
+
+            #--tmp-dir {params.temp_dir}
 
         # ## Cleanup the temp_dir
         # if [[ -d {params.temp_dir} ]]; then
         #     echo -e "Deleting {params.temp_dir}" >> {log}
         #     rm -rf {params.temp_dir}
         # fi
-        """
-        
-
-
 
 #     usage: ./vg autoindex [options]
 # options:

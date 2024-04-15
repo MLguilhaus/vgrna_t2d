@@ -2,4 +2,5 @@
 data/*
 workflow/logs/*
 workflow/slurm/*
+workflow/scripts/notes.sh
 
