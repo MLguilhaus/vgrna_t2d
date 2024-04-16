@@ -21,6 +21,7 @@ wildcard_constraints:
 
 # All subsequent paths
 gfa_path = ("/hpcfs/users/a1627307/genome/hprc-v1.1-mc-grch38.gfa")
+gbz_path = ("/hpcfs/users/a1627307/genome/hprc-v1.1-mc-grch38.gbz")
 gtf_path = ("/hpcfs/users/a1627307/genome/gencode.v45.primary_assembly.annotation.gtf")
 # trim_path = os.path.join("hpcfs", "users", "a1627307", 
 # 						"star_t2d", "star_t2d", "data", "fastq", "trimmed")
@@ -39,9 +40,15 @@ ALL_CONVERT = expand(
 	suffix = ['pg']
 )
 
+ALL_CONSTRUCT = expand(
+	os.path.join(pg_outpath, "spliced-hprc-v1.1-mc-grch38.{suffix}"),
+	suffix = ['pg']
+)
+
 ALL_OUTPUTS = []
 # ALL_OUTPUTS.extend(ALL_INDEX)
 ALL_OUTPUTS.extend(ALL_CONVERT)
+ALL_OUTPUTS.extend(ALL_CONSTRUCT)
 
 rule all:
 	input:
@@ -49,3 +56,4 @@ rule all:
 
 # include: "rules/autoindex.smk"
 include: "rules/convert.smk"
+include: "rules/construct.smk"

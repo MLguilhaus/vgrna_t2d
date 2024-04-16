@@ -9,18 +9,24 @@ rule convert:
     log: os.path.join(log_path, "convert", "convert.log") 
     threads: 16
     resources:
-        runtime = "5h",
-        mem_mb = 10000,
+        runtime = "4h",
+        mem_mb = 100000,
 
     shell:
         """
 
         echo -e "starting at $(date)" > {log}
-        
+
+        set -x
+
         vg convert \
-        -p \
         -t {threads} \
-        --gfa-in {input.gfa} > {output.pg}
+        --gfa-in {input.gfa} \
+        -p  > {output.pg} 2>> {log}
+
+        set +x
+
+        echo -e "conversion completed at $(date)" >> {log}
 
         """
 
