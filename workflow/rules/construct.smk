@@ -1,7 +1,8 @@
 rule construct:
     input:
-        gbz = gbz_path,
-        gtf = gtf_path
+        #gbz = gbz_path,
+        gtf = gtf_path,
+        pg = os.path.join(pg_outpath, "hprc-v1.1-mc-grch38.pg")
 
     output:
         spl_pg = os.path.join(pg_outpath, "spliced-hprc-v1.1-mc-grch38.pg")
@@ -10,8 +11,8 @@ rule construct:
     log: os.path.join(log_path, "construct", "construct.log") 
     threads: 16
     resources:
-        runtime = "20m",
-        mem_mb = 100000
+        runtime = "10h",
+        mem_mb = 120000
 
     shell:
         """
@@ -19,12 +20,12 @@ rule construct:
         vg rna \
         -t {threads} \
         --transcripts {input.gtf} \
-        --gbz-format {input.gbz} > {output.spl_pg} \
+        {input.pg} > {output.spl_pg} \
         --progress &>> {log} 
 
         """
 
-
+# --gbz-format {input.gbz} > {output.spl_pg} \
 # usage: vg rna [options] graph.[vg|pg|hg|gbz] > splicing_graph.[vg|pg|hg]
 
 # General options:

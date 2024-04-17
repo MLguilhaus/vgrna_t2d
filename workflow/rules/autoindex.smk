@@ -34,6 +34,10 @@ rule autoindex:
         """
         
 
+### May be able to run this still with GFA but need to check gtf file
+### Also will need to use unclipped graph and ensure #0 is removed from path names
+### https://github.com/vgteam/vg/issues/4015
+
             #--tmp-dir {params.temp_dir}
 
         # ## Cleanup the temp_dir

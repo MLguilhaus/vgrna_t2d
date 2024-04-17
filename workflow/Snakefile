@@ -27,6 +27,7 @@ gtf_path = ("/hpcfs/users/a1627307/genome/gencode.v45.primary_assembly.annotatio
 # 						"star_t2d", "star_t2d", "data", "fastq", "trimmed")
 log_path = os.path.join("workflow", "logs")
 pg_outpath  = os.path.join("data", "graph")
+transform_outpath = os.path.join("data", "annotation")
 # index_outpath = os.path.join("data", "index")
 # mpmap_outpath = os.path.join("data", "mpmap")
 # mpmaplog_path = os.path.join("output", "mpmap")
@@ -45,10 +46,15 @@ ALL_CONSTRUCT = expand(
 	suffix = ['pg']
 )
 
+ALL_TRANSFORM = expand(
+	os.path.join(transform_outpath, "transformed_GENCODEv45.gtf")
+)
+
 ALL_OUTPUTS = []
 # ALL_OUTPUTS.extend(ALL_INDEX)
 ALL_OUTPUTS.extend(ALL_CONVERT)
 ALL_OUTPUTS.extend(ALL_CONSTRUCT)
+ALL_OUTPUTS.extend(ALL_TRANSFORM)
 
 rule all:
 	input:
@@ -57,3 +63,4 @@ rule all:
 # include: "rules/autoindex.smk"
 include: "rules/convert.smk"
 include: "rules/construct.smk"
+include: "rules/transform_gtf.smk"
