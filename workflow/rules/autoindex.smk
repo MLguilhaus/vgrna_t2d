@@ -1,6 +1,6 @@
 rule autoindex:
     input:
-         gfa = graph_path,
+         gfa = gfa_path,
          gtf = gtf_path,
 
     output: 
@@ -8,7 +8,7 @@ rule autoindex:
         xg = os.path.join(index_outpath, "vg_rna.spliced.xg"),
         dist = os.path.join(index_outpath, "vg_rna.spliced.dist")
 
-    conda: "../envs/autoindex.yml"
+    conda: "../envs/vg.yml"
     log: os.path.join(log_path, "autoindex", "autoindex.log") 
     params:
         workflow = config['autoindex']['workflow'],
@@ -24,12 +24,12 @@ rule autoindex:
         echo -e "starting at $(date)" > {log}
 
         vg autoindex \
-            --workflow {params.workflow} \
-            --threads {threads} \
-            -prefix {params.out_prefix} \
-            --gfa {input.gfa} \
-            --tx-gff {input.gtf} \
-            --verbosity 2 &>> {log}
+            -w {params.workflow} \
+            -t {threads} \
+            -p {params.out_prefix} \
+            -g {input.gfa} \
+            -x {input.gtf} \
+            -V 2 &>> {log}
 
         """
         

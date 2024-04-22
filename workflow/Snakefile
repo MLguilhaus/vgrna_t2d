@@ -28,39 +28,39 @@ gtf_path = ("/hpcfs/users/a1627307/genome/gencode.v45.primary_assembly.annotatio
 log_path = os.path.join("workflow", "logs")
 pg_outpath  = os.path.join("data", "graph")
 transform_outpath = os.path.join("data", "annotation")
-# index_outpath = os.path.join("data", "index")
+index_outpath = os.path.join("data", "index")
 # mpmap_outpath = os.path.join("data", "mpmap")
 # mpmaplog_path = os.path.join("output", "mpmap")
 
-# ALL_INDEX = expand(
-# 	os.path.join(index_outpath, "vg_rna.spliced.{suffix}"),
-# 	suffix = ['gcsa', 'xg', 'dist'])
+ALL_INDEX = expand(
+	os.path.join(index_outpath, "vg_rna.spliced.{suffix}"),
+	suffix = ['gcsa', 'xg', 'dist'])
 
 ALL_CONVERT = expand(
 	os.path.join(pg_outpath, "hprc-v1.1-mc-grch38.{suffix}"),
 	suffix = ['pg']
 )
 
-ALL_CONSTRUCT = expand(
-	os.path.join(pg_outpath, "spliced-hprc-v1.1-mc-grch38.{suffix}"),
-	suffix = ['pg']
-)
+# ALL_CONSTRUCT = expand(
+# 	os.path.join(pg_outpath, "spliced-hprc-v1.1-mc-grch38.{suffix}"),
+# 	suffix = ['pg']
+# )
 
 ALL_TRANSFORM = expand(
-	os.path.join(transform_outpath, "transformed_GENCODEv45.gtf")
+	os.path.join(transform_outpath, "gencode.v45.primary_assembly.annotation_renamed.gtf")
 )
 
 ALL_OUTPUTS = []
-# ALL_OUTPUTS.extend(ALL_INDEX)
+ALL_OUTPUTS.extend(ALL_INDEX)
 ALL_OUTPUTS.extend(ALL_CONVERT)
-ALL_OUTPUTS.extend(ALL_CONSTRUCT)
+# ALL_OUTPUTS.extend(ALL_CONSTRUCT)
 ALL_OUTPUTS.extend(ALL_TRANSFORM)
 
 rule all:
 	input:
 		ALL_OUTPUTS
 
-# include: "rules/autoindex.smk"
+include: "rules/autoindex.smk"
 include: "rules/convert.smk"
-include: "rules/construct.smk"
+# include: "rules/construct.smk"
 include: "rules/transform_gtf.smk"
