@@ -2,10 +2,10 @@ rule construct:
     input:
         # gbz = gbz_path, #gbz need original annotations, #gfa>pg convert needs renamed
         gtf = gtf_path,
-        pg = os.path.join(pg_outpath, "hprc-v1.1-mc-grch38.pg")
+        pg = os.path.join(graph_outpath, "hprc-v1.1-mc-grch38.pg")
 
     output:
-        spl_pg = os.path.join(pg_outpath, "spliced-hprc-v1.1-mc-grch38.pg")
+        spl_pg = os.path.join(graph_outpath, "spliced-hprc-v1.1-mc-grch38.pg")
 
     params:
         maxnode = "32"

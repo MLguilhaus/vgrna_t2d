@@ -3,7 +3,7 @@ rule convert:
         gfa = gfa_full_path,
 
     output: 
-        pg = os.path.join(pg_outpath, "hprc-v1.1-mc-grch38.pg")
+        pg = os.path.join(graph_outpath, "hprc-v1.1-mc-grch38.pg")
 
     conda: "../envs/vg.yml"
     log: os.path.join(log_path, "convert", "convert.log") 

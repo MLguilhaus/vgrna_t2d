@@ -2,7 +2,7 @@ rule transform_gtf:
     input:
         gtf_file = gtf_path
     output:
-        transformed_gtf = os.path.join(transform_outpath, "gencode.v45.primary_assembly.annotation_renamed.gtf"),
+        transformed_gtf = os.path.join(annotation_outpath, "gencode.v45.primary_assembly.annotation_renamed.gtf"),
     
     log: os.path.join(log_path, "transform", "transform.log") 
     threads: 16

@@ -5,6 +5,12 @@ import re
 
 configfile: "config/config.yml"
 
+## Chromosome names
+chrs = '1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y'
+chrnum = ['chr' + ii for ii in chrs.split()]
+annotationbase = "gencode.v45.primary_assembly.annotation"
+graphbase = "hprc-v1.1-mc-grch38"
+
 ## Load samples & set all columns to strings
 df = pd.read_table(config['samples'])
 
@@ -27,11 +33,11 @@ gtf_path = ("/hpcfs/users/a1627307/genome/gencode.v45.primary_assembly.annotatio
 # trim_path = os.path.join("hpcfs", "users", "a1627307", 
 # 						"star_t2d", "star_t2d", "data", "fastq", "trimmed")
 log_path = os.path.join("workflow", "logs")
-pg_outpath  = os.path.join("data", "graph")
-transform_outpath = os.path.join("data", "annotation")
+graph_outpath  = os.path.join("data", "graph")
+annotation_outpath = os.path.join("data", "annotation")
 index_outpath = os.path.join("data", "index")
 gtf_rn = os.path.join(
-            transform_outpath, "gencode.v45.primary_assembly.annotation_renamed.gtf")
+            annotation_outpath, "gencode.v45.primary_assembly.annotation_renamed.gtf")
 # mpmap_outpath = os.path.join("data", "mpmap")
 # mpmaplog_path = os.path.join("output", "mpmap")
 
@@ -44,17 +50,23 @@ gtf_rn = os.path.join(
 # )
 
 ALL_CONVERT = expand(
-	os.path.join(pg_outpath, "hprc-v1.1-mc-grch38.{suffix}"),
+	os.path.join(graph_outpath, graphbase + ".{suffix}"),
 	suffix = ['pg']
 )
 
 ALL_CONSTRUCT = expand(
-	os.path.join(pg_outpath, "spliced-hprc-v1.1-mc-grch38.{suffix}"),
+	os.path.join(graph_outpath, "spliced-" + graphbase + ".{suffix}"),
 	suffix = ['pg']
 )
 
 ALL_TRANSFORM = expand(
-	os.path.join(transform_outpath, "gencode.v45.primary_assembly.annotation_renamed.gtf")
+	os.path.join(annotation_outpath, annotationbase + "_renamed.gtf"),
+)
+
+ALL_SPLIT_GTF = expand(
+	os.path.join(
+            annotation_outpath, "{chrnum}." + annotationbase + ".gtf"),
+	chrnum = chrnum
 )
 
 ALL_OUTPUTS = []
@@ -62,6 +74,7 @@ ALL_OUTPUTS = []
 ALL_OUTPUTS.extend(ALL_CONVERT)
 ALL_OUTPUTS.extend(ALL_CONSTRUCT)
 ALL_OUTPUTS.extend(ALL_TRANSFORM)
+ALL_OUTPUTS.extend(ALL_SPLIT_GTF)
 
 rule all:
 	input:
@@ -71,3 +84,4 @@ rule all:
 include: "rules/convert.smk"
 include: "rules/construct.smk"
 include: "rules/transform_gtf.smk"
+include: "rules/subset.smk"
