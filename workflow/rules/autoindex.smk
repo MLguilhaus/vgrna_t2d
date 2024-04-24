@@ -1,31 +1,33 @@
 rule autoindex:
     input:
-         gfa = gfa_path,
-         gtf = gtf_path,
+        #  gfa = gfa_path,
+        gfa = gfa_full_path,
+        gtf = gtf_rn,
 
     output: 
-        gcsa = os.path.join(index_outpath, "vg_rna.spliced.gcsa"),
-        xg = os.path.join(index_outpath, "vg_rna.spliced.xg"),
-        dist = os.path.join(index_outpath, "vg_rna.spliced.dist")
+        gcsa = os.path.join(index_outpath, "hprc-v1.1-mc-grch38_spliced.gcsa"),
+        xg = os.path.join(index_outpath, "hprc-v1.1-mc-grch38_spliced.xg"),
+        dist = os.path.join(index_outpath, "hprc-v1.1-mc-grch38_spliced.dist")
+        
 
     conda: "../envs/vg.yml"
     log: os.path.join(log_path, "autoindex", "autoindex.log") 
     params:
         workflow = config['autoindex']['workflow'],
         out_prefix = os.path.join(index_outpath, "vg_rna"),
-        #temp_dir = os.path.join(index_outpath, "_indextmp")
-    threads: 16
+        temp_dir = ("/tmp/vgrna")
+    threads: 32
     resources:
         runtime = "10h",
-        mem_mb = 180000,
+        mem_mb = 200000,
 
     shell:
         """
-        echo -e "starting at $(date)" > {log}
 
         vg autoindex \
             -w {params.workflow} \
             -t {threads} \
+            -T {params.temp_dir}
             -p {params.out_prefix} \
             -g {input.gfa} \
             -x {input.gtf} \
@@ -33,9 +35,26 @@ rule autoindex:
 
         """
         
+# rule copy_index_logs:
+#     input:
+#         "logs/autoindex.log"
+#     output:
+#         "logs/autoindex--{jobid}.log"
+#     params:
+#         jobid=lambda wildcards: cluster.jobid,
+#         rule = "{autoindex}"
+    
+#     threads: 1
+#     resources:
+#         runtime = "1m"
+#     shell:
+#         """
+#         cp {input} {output}
+  
+#         """
 
 ### May be able to run this still with GFA but need to check gtf file
-### Also will need to use unclipped graph and ensure #0 is removed from path names
+### Also will need to use unclipped graph and ensure #0 is removed from path names?
 ### https://github.com/vgteam/vg/issues/4015
 
             #--tmp-dir {params.temp_dir}

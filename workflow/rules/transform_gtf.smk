@@ -12,9 +12,10 @@ rule transform_gtf:
 
     shell:
         """
-        cat {input.gtf_file} | sed -e 's/^chrM/chrMT/g' \
-        | grep -v "mRNA_start_NF" | grep -v "mRNA_end_NF" \
-        > {output.transformed_gtf} \
-        sed -i -e 's/^chr//g' {output.transformed_gtf}
+        cat {input.gtf_file} | \
+        sed -e 's/^chrM/chrMT/g' \
+        | grep -v "mRNA_start_NF" \
+        | grep -v "mRNA_end_NF" > {output.transformed_gtf} &>> {log} \
+        sed -i -e 's/^chr//g' {output.transformed_gtf} &>> {log}
 
         """

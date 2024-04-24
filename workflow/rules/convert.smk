@@ -1,6 +1,6 @@
 rule convert:
     input:
-         gfa = gfa_path,
+        gfa = gfa_full_path,
 
     output: 
         pg = os.path.join(pg_outpath, "hprc-v1.1-mc-grch38.pg")
