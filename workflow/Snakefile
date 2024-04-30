@@ -49,32 +49,37 @@ gtf_rn = os.path.join(
 
 # )
 
+# ALL_CONVERT = expand(
+# 	os.path.join(graph_outpath, graphbase + ".{suffix}"),
+# 	suffix = ['pg']
+# )
 ALL_CONVERT = expand(
-	os.path.join(graph_outpath, graphbase + ".{suffix}"),
-	suffix = ['pg']
+	os.path.join(graph_outpath, "{base}.{suffix}"),
+	base = ['chr22'],
+	suffix = ['gfa']
 )
 
-ALL_CONSTRUCT = expand(
-	os.path.join(graph_outpath, "spliced-" + graphbase + ".{suffix}"),
-	suffix = ['pg']
-)
+# ALL_CONSTRUCT = expand(
+# 	os.path.join(graph_outpath, "spliced-" + graphbase + ".{suffix}"),
+# 	suffix = ['pg']
+# )
 
-ALL_TRANSFORM = expand(
-	os.path.join(annotation_outpath, annotationbase + "_renamed.gtf"),
-)
+# ALL_TRANSFORM = expand(
+# 	os.path.join(annotation_outpath, annotationbase + "_renamed.gtf"),
+# )
 
-ALL_SPLIT_GTF = expand(
-	os.path.join(
-            annotation_outpath, "{chrnum}." + annotationbase + ".gtf"),
-	chrnum = chrnum
-)
+# ALL_SPLIT_GTF = expand(
+# 	os.path.join(
+#             annotation_outpath, "{chrnum}." + annotationbase + ".gtf"),
+# 	chrnum = chrnum
+# )
 
 ALL_OUTPUTS = []
 # ALL_OUTPUTS.extend(ALL_INDEX)
 ALL_OUTPUTS.extend(ALL_CONVERT)
-ALL_OUTPUTS.extend(ALL_CONSTRUCT)
-ALL_OUTPUTS.extend(ALL_TRANSFORM)
-ALL_OUTPUTS.extend(ALL_SPLIT_GTF)
+# ALL_OUTPUTS.extend(ALL_CONSTRUCT)
+# ALL_OUTPUTS.extend(ALL_TRANSFORM)
+# ALL_OUTPUTS.extend(ALL_SPLIT_GTF)
 
 rule all:
 	input:
@@ -82,6 +87,6 @@ rule all:
 
 # include: "rules/autoindex.smk"
 include: "rules/convert.smk"
-include: "rules/construct.smk"
-include: "rules/transform_gtf.smk"
-include: "rules/subset.smk"
+# include: "rules/construct.smk"
+# include: "rules/transform_gtf.smk"
+# include: "rules/subset.smk"

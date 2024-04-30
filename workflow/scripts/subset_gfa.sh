@@ -4,10 +4,9 @@
 
 #SBATCH -p icelake
 #SBATCH -N 1
-#SBATCH -n 8
-#SBATCH --ntasks-per-core=2
-#SBATCH --time6:00:00
-#SBATCH --mem=100GB
+#SBATCH -n 32
+#SBATCH --time=6:00:00
+#SBATCH --mem=200GB
 #SBATCH --job-name subset_gfa
 #SBATCH -o /hpcfs/users/a1627307/vgrna_t2d/workflow/slurm/%x_%j.out
 #SBATCH -e /hpcfs/users/a1627307/vgrna_t2d/workflow/slurm/%x_%j.err
@@ -31,4 +30,4 @@ CPU=32
         -t $CPU\
         -x $INPUTGFA \
         -C -O gfa \
-        > "$OUTDIR/chunk.gfa"
+        > "$OUTDIR/chunk.gfa" \

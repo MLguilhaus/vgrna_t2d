@@ -1,13 +1,14 @@
 rule convert:
     input:
-        gfa = gfa_full_path,
+        vg = os.path.join(graph_outpath, "chr22.vg")
 
     output: 
-        pg = os.path.join(graph_outpath, "hprc-v1.1-mc-grch38.pg")
+        # pg = os.path.join(graph_outpath, "hprc-v1.1-mc-grch38.pg")
+        chrgfa = os.path.join(graph_outpath, "chr22.gfa")
 
     conda: "../envs/vg.yml"
-    log: os.path.join(log_path, "convert", "convert.log") 
-    threads: 16
+    log: os.path.join(log_path, "convert", "chr22.convert.log") 
+    threads: 32
     resources:
         runtime = "4h",
         mem_mb = 100000,
@@ -21,14 +22,46 @@ rule convert:
 
         vg convert \
         -t {threads} \
-        --gfa-in {input.gfa} \
-        -p  > {output.pg} 2>> {log}
+        {input.vg} \
+        -f  > {output.chrgfa} 2>> {log}
 
         set +x
 
         echo -e "conversion completed at $(date)" >> {log}
 
         """
+
+# rule convert:
+#     input:
+#         gfa = gfa_full_path,
+
+#     output: 
+#         pg = os.path.join(graph_outpath, "hprc-v1.1-mc-grch38.pg")
+
+#     conda: "../envs/vg.yml"
+#     log: os.path.join(log_path, "convert", "convert.log") 
+#     threads: 16
+#     resources:
+#         runtime = "4h",
+#         mem_mb = 100000,
+
+#     shell:
+#         """
+
+#         echo -e "starting at $(date)" > {log}
+
+#         set -x
+
+#         vg convert \
+#         -t {threads} \
+#         --gfa-in {input.gfa} \
+#         -p  > {output.pg} 2>> {log}
+
+#         set +x
+
+#         echo -e "conversion completed at $(date)" >> {log}
+
+#         """
 
 # vg convert
 # usage: vg convert [options] <input-graph>
