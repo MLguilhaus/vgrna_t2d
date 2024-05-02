@@ -1,3 +1,6 @@
+# So many issues with doing this from the HPRC graph as a whole
+# Also difficult without the haplotype gtf file (which we could generate)
+# Many issues stem from memory requirements (200GB was the most I gave)
 rule autoindex:
     input:
         gfa = os.path.join(graph_outpath, "chr22.gfa"),
