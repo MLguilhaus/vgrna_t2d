@@ -11,3 +11,6 @@ autoindex:
 
 chunk:
   out_format: "gfa"
+
+snarls: 
+  algorithm: "integrated"

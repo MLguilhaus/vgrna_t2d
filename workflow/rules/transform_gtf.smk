@@ -1,10 +1,12 @@
 rule transform_gtf:
     input:
-        gtf_file = gtf_path
+        gtf_file = os.path.join(
+            annotation_outpath, "{chrnum}." + annotationbase + ".gtf"),
     output:
-        transformed_gtf = os.path.join(annotation_outpath, "gencode.v45.primary_assembly.annotation_renamed.gtf"),
+        transformed_gtf = os.path.join(
+            annotation_outpath, "{chrnum}." + annotationbase + "_renamed.gtf"),
     
-    log: os.path.join(log_path, "transform", "transform.log") 
+    log: os.path.join(log_path, "transform", "{chrnum}.transform.log") 
     threads: 16
     resources:
         runtime = "1h",

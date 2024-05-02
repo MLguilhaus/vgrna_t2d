@@ -4,28 +4,24 @@ rule convert:
 
     output: 
         # pg = os.path.join(graph_outpath, "hprc-v1.1-mc-grch38.pg")
-        chrgfa = os.path.join(graph_outpath, "chr22.gfa")
+        chrpg = os.path.join(graph_outpath, "chr22.pg")
 
     conda: "../envs/vg.yml"
     log: os.path.join(log_path, "convert", "chr22.convert.log") 
     threads: 32
     resources:
         runtime = "4h",
-        mem_mb = 100000,
+        mem_mb = 80000,
 
     shell:
         """
 
         echo -e "starting at $(date)" > {log}
 
-        set -x
-
         vg convert \
         -t {threads} \
         {input.vg} \
-        -f  > {output.chrgfa} 2>> {log}
-
-        set +x
+        > {output.chrpg} &>> {log}
 
         echo -e "conversion completed at $(date)" >> {log}
 

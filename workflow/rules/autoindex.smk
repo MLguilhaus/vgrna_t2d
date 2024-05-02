@@ -1,25 +1,34 @@
 rule autoindex:
     input:
-        #  gfa = gfa_path,
-        gfa = gfa_full_path,
-        gtf = gtf_rn,
+        gfa = os.path.join(graph_outpath, "chr22.gfa"),
+        chr_gtf = os.path.join(
+            annotation_outpath, "chr22." + annotationbase + "-renamed.gtf" 
+        ),
 
     output: 
-        gcsa = os.path.join(index_outpath, "hprc-v1.1-mc-grch38_spliced.gcsa"),
-        xg = os.path.join(index_outpath, "hprc-v1.1-mc-grch38_spliced.xg"),
-        dist = os.path.join(index_outpath, "hprc-v1.1-mc-grch38_spliced.dist")
-        
+        gcsa = os.path.join(index_outpath, "chr22_autoindex_spliced.gcsa"),
+        xg = os.path.join(index_outpath, "chr22_autoindex_spliced.xg"),
+        dist = os.path.join(index_outpath, "chr22_autoindex_spliced.dist")
+    # input:
+    #     #  gfa = gfa_path,
+    #     gfa = gfa_full_path,
+    #     gtf = gtf_rn,
+
+    # output: 
+    #     gcsa = os.path.join(index_outpath, "hprc-v1.1-mc-grch38_spliced.gcsa"),
+    #     xg = os.path.join(index_outpath, "hprc-v1.1-mc-grch38_spliced.xg"),
+    #     dist = os.path.join(index_outpath, "hprc-v1.1-mc-grch38_spliced.dist")   
 
     conda: "../envs/vg.yml"
-    log: os.path.join(log_path, "autoindex", "autoindex.log") 
+    log: os.path.join(log_path, "autoindex", "chr22.autoindex.log") 
     params:
         workflow = config['autoindex']['workflow'],
         out_prefix = os.path.join(index_outpath, "vg_rna"),
         temp_dir = ("/tmp/vgrna")
     threads: 32
     resources:
-        runtime = "10h",
-        mem_mb = 200000,
+        runtime = "5h",
+        mem_mb = 100000,
 
     shell:
         """
@@ -30,7 +39,7 @@ rule autoindex:
             -T {params.temp_dir}
             -p {params.out_prefix} \
             -g {input.gfa} \
-            -x {input.gtf} \
+            -x {input.chr_gtf} \
             -V 2 &>> {log}
 
         """
