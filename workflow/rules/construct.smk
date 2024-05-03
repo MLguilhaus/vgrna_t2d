@@ -1,9 +1,11 @@
 rule construct:
     input:
         # gbz = gbz_path, #gbz need original annotations, #gfa>pg convert needs renamed
+        # gtf = os.path.join(
+        #     annotation_outpath, "chr22." + annotationbase + "_renamed.gtf"
+        # ),
         gtf = os.path.join(
-            annotation_outpath, "chr22." + annotationbase + "-renamed.gtf"
-        ),
+            annotation_outpath, "chr22." + annotationbase + ".gtf"),
         pg = os.path.join(graph_outpath, "chr22.pg")
 
     output:
@@ -24,9 +26,13 @@ rule construct:
 
         vg rna \
         -t {threads} \
-        -k {params.maxnode} \
+        -p \
+        -e \
         -n {input.gtf} \
         {input.pg} > {output.spl_pg} \
-        -p &>> {log} 
+
 
         """
+
+    # max node length set as sibessen paper does mention in paper but not in scripts think we leave it out.    
+    #     -k {params.maxnode} \ 

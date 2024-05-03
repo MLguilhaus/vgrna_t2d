@@ -1,17 +1,17 @@
 rule convert:
     input:
-        vg = os.path.join(graph_outpath, "chr22.vg")
+        vg = os.path.join(graph_outpath, "chr1.vg")
 
     output: 
         # pg = os.path.join(graph_outpath, "hprc-v1.1-mc-grch38.pg")
-        chrpg = os.path.join(graph_outpath, "chr22.pg")
+        chrpg = os.path.join(graph_outpath, "chr1.pg")
 
     conda: "../envs/vg.yml"
-    log: os.path.join(log_path, "convert", "chr22.convert.log") 
+    log: os.path.join(log_path, "convert", "chr1.convert.log") 
     threads: 32
     resources:
-        runtime = "4h",
-        mem_mb = 80000,
+        runtime = "2h",
+        mem_mb = 10000,
 
     shell:
         """

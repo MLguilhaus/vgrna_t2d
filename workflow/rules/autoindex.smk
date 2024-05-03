@@ -5,13 +5,13 @@ rule autoindex:
     input:
         gfa = os.path.join(graph_outpath, "chr22.gfa"),
         chr_gtf = os.path.join(
-            annotation_outpath, "chr22." + annotationbase + "-renamed.gtf" 
+            annotation_outpath, "chr22." + annotationbase + ".gtf" 
         ),
 
     output: 
-        gcsa = os.path.join(index_outpath, "chr22_autoindex_spliced.gcsa"),
-        xg = os.path.join(index_outpath, "chr22_autoindex_spliced.xg"),
-        dist = os.path.join(index_outpath, "chr22_autoindex_spliced.dist")
+        gcsa = os.path.join(index_outpath, "chr22_autoindex-spliced.gcsa"),
+        xg = os.path.join(index_outpath, "chr22_autoindex-spliced.xg"),
+        dist = os.path.join(index_outpath, "chr22_autoindex-spliced.dist")
     # input:
     #     #  gfa = gfa_path,
     #     gfa = gfa_full_path,
@@ -27,7 +27,7 @@ rule autoindex:
     params:
         workflow = config['autoindex']['workflow'],
         out_prefix = os.path.join(index_outpath, "vg_rna"),
-        temp_dir = ("/tmp/vgrna")
+        temp_dir = ("/tmp")
     threads: 32
     resources:
         runtime = "5h",

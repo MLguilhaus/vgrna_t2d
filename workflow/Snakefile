@@ -41,10 +41,10 @@ gtf_rn = os.path.join(
 # mpmap_outpath = os.path.join("data", "mpmap")
 # mpmaplog_path = os.path.join("output", "mpmap")
 
-# ALL_INDEX = expand(
-# 	os.path.join(index_outpath, "{base}_autoindex_spliced.{suffix}"),
-# 	base = ['chr22'],
-# 	suffix = ['gcsa', 'xg', 'dist'])
+ALL_INDEX = expand(
+	os.path.join(index_outpath, "{base}_autoindex-spliced.{suffix}"),
+	base = ['chr22'],
+	suffix = ['gcsa', 'xg', 'dist'])
 
 # ALL_INDEXLOGS = expand(
 
@@ -56,7 +56,7 @@ gtf_rn = os.path.join(
 # )
 ALL_CONVERT = expand(
 	os.path.join(graph_outpath, "{base}.{suffix}"),
-	base = ['chr22'],
+	base = ['chr1'],
 	suffix = ['pg']
 )
 
@@ -76,12 +76,12 @@ ALL_SPLIT_GTF = expand(
 	chrnum = chrnum
 )
 
-ALL_XG = expand(
-	os.path.join(
-			index_outpath, "{base}-spliced.{suffix}"),
-	base = ['chr22'],
-	suffix = ['xg']		
-)
+# ALL_XG = expand(
+# 	os.path.join(
+# 			index_outpath, "{base}-spliced.{suffix}"),
+# 	base = ['chr22'],
+# 	suffix = ['xg']		
+# )
 
 ## Add this in when running out of storage or ready to do rpvg
 ## OR want to gen pantranscriptome
@@ -93,22 +93,22 @@ ALL_XG = expand(
 # )
 
 ALL_OUTPUTS = []
-# ALL_OUTPUTS.extend(ALL_INDEX)
+ALL_OUTPUTS.extend(ALL_INDEX)
 ALL_OUTPUTS.extend(ALL_CONVERT)
 ALL_OUTPUTS.extend(ALL_CONSTRUCT)
 # ALL_OUTPUTS.extend(ALL_TRANSFORM)
 ALL_OUTPUTS.extend(ALL_SPLIT_GTF)
-ALL_OUTPUTS.extend(ALL_XG)
+# ALL_OUTPUTS.extend(ALL_XG)
 # ALL_OUTPUTS.extend(ALL_GBWT)
 
 rule all:
 	input:
 		ALL_OUTPUTS
 		
-# include: "rules/autoindex.smk"
+include: "rules/autoindex.smk"
 include: "rules/convert.smk"
 include: "rules/construct.smk"
 # include: "rules/transform_gtf.smk"
 include: "rules/subset.smk"
-include: "rules/xg_index.smk"
+# include: "rules/xg_index.smk"
 # include: "rules/gbwt_index.smk"
