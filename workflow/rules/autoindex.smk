@@ -3,15 +3,15 @@
 # Many issues stem from memory requirements (200GB was the most I gave)
 rule autoindex:
     input:
-        gfa = os.path.join(graph_outpath, "chr22.gfa"),
+        gfa = os.path.join(graph_outpath, "chr22.d9.gfa"),
         chr_gtf = os.path.join(
             annotation_outpath, "chr22." + annotationbase + ".gtf" 
         ),
 
     output: 
-        gcsa = os.path.join(index_outpath, "chr22_autoindex-spliced.gcsa"),
-        xg = os.path.join(index_outpath, "chr22_autoindex-spliced.xg"),
-        dist = os.path.join(index_outpath, "chr22_autoindex-spliced.dist")
+        gcsa = os.path.join(index_outpath, "chr22.d9.spliced.gcsa"),
+        xg = os.path.join(index_outpath, "chr22.d9.spliced.xg"),
+        dist = os.path.join(index_outpath, "chr22.d9.spliced.dist")
     # input:
     #     #  gfa = gfa_path,
     #     gfa = gfa_full_path,
@@ -25,22 +25,25 @@ rule autoindex:
     conda: "../envs/vg.yml"
     log: os.path.join(log_path, "autoindex", "chr22.autoindex.log") 
     params:
-        workflow = config['autoindex']['workflow'],
-        out_prefix = os.path.join(index_outpath, "vg_rna"),
+        workflow_a = config['autoindex']['workflow_a'],
+        workflow_b = config['autoindex']['workflow_b'],
+        out_prefix = os.path.join(index_outpath, "chr22.d9.spliced"),
         temp_dir = ("/tmp")
     threads: 32
     resources:
-        runtime = "5h",
-        mem_mb = 100000,
+        runtime = "6h",
+        mem_mb = 140000,
 
     shell:
         """
 
         vg autoindex \
-            -w {params.workflow} \
             -t {threads} \
-            -T {params.temp_dir}
+            -w {params.workflow_a} \
+            -w {params.workflow_b} \
+            -T {params.temp_dir} \
             -p {params.out_prefix} \
+            -M {resources.mem_mb} \
             -g {input.gfa} \
             -x {input.chr_gtf} \
             -V 2 &>> {log}

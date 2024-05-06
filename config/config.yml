@@ -7,7 +7,8 @@ graphbase: "hprc-v1.1-mc-grch38"
 
 
 autoindex:
-  workflow: "mpmap"
+  workflow_a: "mpmap"
+  workflow_b: "rpvg"
 
 chunk:
   out_format: "gfa"

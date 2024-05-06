@@ -41,9 +41,15 @@ gtf_rn = os.path.join(
 # mpmap_outpath = os.path.join("data", "mpmap")
 # mpmaplog_path = os.path.join("output", "mpmap")
 
+ALL_CONVERT = expand(
+	os.path.join(graph_outpath, "{base}.{suffix}"),
+	base = ['chr22.d9'],
+	suffix = ['gfa']
+)
+
 ALL_INDEX = expand(
-	os.path.join(index_outpath, "{base}_autoindex-spliced.{suffix}"),
-	base = ['chr22'],
+	os.path.join(index_outpath, "{base}.spliced.{suffix}"),
+	base = ['chr22.d9'],
 	suffix = ['gcsa', 'xg', 'dist'])
 
 # ALL_INDEXLOGS = expand(
@@ -54,27 +60,22 @@ ALL_INDEX = expand(
 # 	os.path.join(graph_outpath, graphbase + ".{suffix}"),
 # 	suffix = ['pg']
 # )
-ALL_CONVERT = expand(
-	os.path.join(graph_outpath, "{base}.{suffix}"),
-	base = ['chr1'],
-	suffix = ['pg']
-)
 
-ALL_CONSTRUCT = expand(
-	os.path.join(graph_outpath, "chr22-spliced.{suffix}"),
-	suffix = ['pg']
-)
+# ALL_CONSTRUCT = expand(
+# 	os.path.join(graph_outpath, "chr22-spliced.{suffix}"),
+# 	suffix = ['pg']
+# )
 
 # ALL_TRANSFORM = expand(
 # 	os.path.join(annotation_outpath, "{chrnum}." + annotationbase + "_renamed.gtf"),
 # 	chrnum = chrnum
 # )
 
-ALL_SPLIT_GTF = expand(
-	os.path.join(
-            annotation_outpath, "{chrnum}." + annotationbase + ".gtf"),
-	chrnum = chrnum
-)
+# ALL_SPLIT_GTF = expand(
+# 	os.path.join(
+#             annotation_outpath, "{chrnum}." + annotationbase + ".gtf"),
+# 	chrnum = chrnum
+# )
 
 # ALL_XG = expand(
 # 	os.path.join(
@@ -93,11 +94,11 @@ ALL_SPLIT_GTF = expand(
 # )
 
 ALL_OUTPUTS = []
-ALL_OUTPUTS.extend(ALL_INDEX)
 ALL_OUTPUTS.extend(ALL_CONVERT)
-ALL_OUTPUTS.extend(ALL_CONSTRUCT)
+ALL_OUTPUTS.extend(ALL_INDEX)
+# ALL_OUTPUTS.extend(ALL_CONSTRUCT)
 # ALL_OUTPUTS.extend(ALL_TRANSFORM)
-ALL_OUTPUTS.extend(ALL_SPLIT_GTF)
+# ALL_OUTPUTS.extend(ALL_SPLIT_GTF)
 # ALL_OUTPUTS.extend(ALL_XG)
 # ALL_OUTPUTS.extend(ALL_GBWT)
 
@@ -105,10 +106,10 @@ rule all:
 	input:
 		ALL_OUTPUTS
 		
-include: "rules/autoindex.smk"
 include: "rules/convert.smk"
-include: "rules/construct.smk"
+include: "rules/autoindex.smk"
+# include: "rules/construct.smk"
 # include: "rules/transform_gtf.smk"
-include: "rules/subset.smk"
+# include: "rules/subset.smk"
 # include: "rules/xg_index.smk"
 # include: "rules/gbwt_index.smk"

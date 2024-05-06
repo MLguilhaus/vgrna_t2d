@@ -1,17 +1,18 @@
 rule convert:
     input:
-        vg = os.path.join(graph_outpath, "chr1.vg")
+        vg = os.path.join(graph_outpath, "chr22.d9.vg")
 
     output: 
         # pg = os.path.join(graph_outpath, "hprc-v1.1-mc-grch38.pg")
-        chrpg = os.path.join(graph_outpath, "chr1.pg")
+        # chrpg = os.path.join(graph_outpath, "chr22.d9.pg")
+        chrgfa = os.path.join(graph_outpath, "chr22.d9.gfa")
 
     conda: "../envs/vg.yml"
-    log: os.path.join(log_path, "convert", "chr1.convert.log") 
+    log: os.path.join(log_path, "convert", "chr22gfa.convert.log") 
     threads: 32
     resources:
         runtime = "2h",
-        mem_mb = 10000,
+        mem_mb = 80000,
 
     shell:
         """
@@ -20,8 +21,8 @@ rule convert:
 
         vg convert \
         -t {threads} \
-        {input.vg} \
-        > {output.chrpg} &>> {log}
+        -f {input.vg} \
+        > {output.chrgfa} &>> {log}
 
         echo -e "conversion completed at $(date)" >> {log}
 
