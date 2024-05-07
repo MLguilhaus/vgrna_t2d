@@ -30,6 +30,8 @@ gfa_path = ("/hpcfs/users/a1627307/genome/hprc-v1.1-mc-grch38.gfa")
 gfa_full_path = ("/hpcfs/users/a1627307/genome/hprc-v1.1-mc-grch38.full.gfa")
 gbz_path = ("/hpcfs/users/a1627307/genome/hprc-v1.1-mc-grch38.gbz")
 gtf_path = ("/hpcfs/users/a1627307/genome/gencode.v45.primary_assembly.annotation.gtf")
+refpath = ("/hpcfs/users/a1627307/genome/GRCh38.primary_assembly.genome.fa")
+vcfpath = ("/hpcfs/users/a1627307/vgrna_t2d/data/hprc-v1.1-mc-grch38.vcfbub.a100k.wave.vcf.gz")
 # trim_path = os.path.join("hpcfs", "users", "a1627307", 
 # 						"star_t2d", "star_t2d", "data", "fastq", "trimmed")
 log_path = os.path.join("workflow", "logs")
@@ -49,7 +51,7 @@ ALL_CONVERT = expand(
 
 ALL_INDEX = expand(
 	os.path.join(index_outpath, "{base}.spliced.{suffix}"),
-	base = ['chr22.d9'],
+	base = ['hprc-v1.1-mc-grch38'],
 	suffix = ['gcsa', 'xg', 'dist'])
 
 # ALL_INDEXLOGS = expand(

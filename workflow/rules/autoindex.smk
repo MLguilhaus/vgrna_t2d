@@ -1,38 +1,77 @@
-# So many issues with doing this from the HPRC graph as a whole
-# Also difficult without the haplotype gtf file (which we could generate)
-# Many issues stem from memory requirements (200GB was the most I gave)
+# # So many issues with doing this from the HPRC graph as a whole
+# # Also difficult without the haplotype gtf file (which we could generate)
+# # Many issues stem from memory requirements (200GB was the most I gave)
+# rule autoindex:
+#     input:
+#         gfa = os.path.join(graph_outpath, "chr22.d9.gfa"),
+#         chr_gtf = os.path.join(
+#             annotation_outpath, "chr22." + annotationbase + ".gtf" 
+#         ),
+
+#     output: 
+#         gcsa = os.path.join(index_outpath, "chr22.d9.spliced.gcsa"),
+#         xg = os.path.join(index_outpath, "chr22.d9.spliced.xg"),
+#         dist = os.path.join(index_outpath, "chr22.d9.spliced.dist")
+#     # input:
+#     #     #  gfa = gfa_path,
+#     #     gfa = gfa_full_path,
+#     #     gtf = gtf_rn,
+
+#     # output: 
+#     #     gcsa = os.path.join(index_outpath, "hprc-v1.1-mc-grch38_spliced.gcsa"),
+#     #     xg = os.path.join(index_outpath, "hprc-v1.1-mc-grch38_spliced.xg"),
+#     #     dist = os.path.join(index_outpath, "hprc-v1.1-mc-grch38_spliced.dist")   
+
+#     conda: "../envs/vg.yml"
+#     log: os.path.join(log_path, "autoindex", "chr22.autoindex.log") 
+#     params:
+#         workflow_a = config['autoindex']['workflow_a'],
+#         workflow_b = config['autoindex']['workflow_b'],
+#         out_prefix = os.path.join(index_outpath, "chr22.d9.spliced"),
+#         temp_dir = ("/tmp")
+#     threads: 32
+#     resources:
+#         runtime = "6h",
+#         mem_mb = 140000,
+
+#     shell:
+#         """
+
+#         vg autoindex \
+#             -t {threads} \
+#             -w {params.workflow_a} \
+#             -w {params.workflow_b} \
+#             -T {params.temp_dir} \
+#             -p {params.out_prefix} \
+#             -M {resources.mem_mb} \
+#             -g {input.gfa} \
+#             -x {input.chr_gtf} \
+#             -V 2 &>> {log}
+
+#         """
+
 rule autoindex:
     input:
-        gfa = os.path.join(graph_outpath, "chr22.d9.gfa"),
-        chr_gtf = os.path.join(
-            annotation_outpath, "chr22." + annotationbase + ".gtf" 
-        ),
+        fa = refpath,
+        vcf = vcfpath,
+        gtf = gtf_path
 
     output: 
-        gcsa = os.path.join(index_outpath, "chr22.d9.spliced.gcsa"),
-        xg = os.path.join(index_outpath, "chr22.d9.spliced.xg"),
-        dist = os.path.join(index_outpath, "chr22.d9.spliced.dist")
-    # input:
-    #     #  gfa = gfa_path,
-    #     gfa = gfa_full_path,
-    #     gtf = gtf_rn,
-
-    # output: 
-    #     gcsa = os.path.join(index_outpath, "hprc-v1.1-mc-grch38_spliced.gcsa"),
-    #     xg = os.path.join(index_outpath, "hprc-v1.1-mc-grch38_spliced.xg"),
-    #     dist = os.path.join(index_outpath, "hprc-v1.1-mc-grch38_spliced.dist")   
+        gcsa = os.path.join(index_outpath, "hprc-v1.1-mc-grch38.spliced.gcsa"),
+        xg = os.path.join(index_outpath, "hprc-v1.1-mc-grch38.spliced.xg"),
+        dist = os.path.join(index_outpath, "hprc-v1.1-mc-grch38.spliced.dist") 
 
     conda: "../envs/vg.yml"
-    log: os.path.join(log_path, "autoindex", "chr22.autoindex.log") 
+    log: os.path.join(log_path, "autoindex", "vcf.fa.autoindex.log") 
     params:
         workflow_a = config['autoindex']['workflow_a'],
         workflow_b = config['autoindex']['workflow_b'],
-        out_prefix = os.path.join(index_outpath, "chr22.d9.spliced"),
+        out_prefix = os.path.join(index_outpath, "hprc-v1.1-mc-grch38.spliced"),
         temp_dir = ("/tmp")
     threads: 32
     resources:
-        runtime = "6h",
-        mem_mb = 140000,
+        runtime = "16h",
+        mem_mb = 200000,
 
     shell:
         """
@@ -44,8 +83,9 @@ rule autoindex:
             -T {params.temp_dir} \
             -p {params.out_prefix} \
             -M {resources.mem_mb} \
-            -g {input.gfa} \
-            -x {input.chr_gtf} \
+            -x {input.gtf} \
+            -r {input.fa} \
+            -v {input.vcf} \
             -V 2 &>> {log}
 
         """
