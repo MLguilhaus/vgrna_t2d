@@ -8,8 +8,14 @@ configfile: "config/config.yml"
 ## Chromosome names
 chrs = '1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y'
 chrnum = ['chr' + ii for ii in chrs.split()]
+
+## Basenames
 annotationbase = "gencode.v45.primary_assembly.annotation"
 graphbase = "hprc-v1.1-mc-grch38"
+
+## Test SRR 
+testsample = ['SRR15881903']
+# , 'SRR15881955', 'SRR15881946', 'SRR15881891
 
 ## Load samples & set all columns to strings
 df = pd.read_table(config['samples'])
@@ -31,17 +37,18 @@ gfa_full_path = ("/hpcfs/users/a1627307/genome/hprc-v1.1-mc-grch38.full.gfa")
 gbz_path = ("/hpcfs/users/a1627307/genome/hprc-v1.1-mc-grch38.gbz")
 gtf_path = ("/hpcfs/users/a1627307/genome/gencode.v45.primary_assembly.annotation.gtf")
 refpath = ("/hpcfs/users/a1627307/genome/GRCh38.primary_assembly.genome.fa")
+altrefpath = ("/hpcfs/users/a1627307/genome/GCA_000001405.15_GRCh38_genomic.fna")
 vcfpath = ("/hpcfs/users/a1627307/vgrna_t2d/data/hprc-v1.1-mc-grch38.vcfbub.a100k.wave.vcf.gz")
-# trim_path = os.path.join("hpcfs", "users", "a1627307", 
-# 						"star_t2d", "star_t2d", "data", "fastq", "trimmed")
+trim_path = os.path.join("hpcfs", "users", "a1627307", 
+						"star_t2d", "star_t2d", "data", "fastq", "trimmed")
 log_path = os.path.join("workflow", "logs")
 graph_outpath  = os.path.join("data", "graph")
 annotation_outpath = os.path.join("data", "annotation")
 index_outpath = os.path.join("data", "index")
 gtf_rn = os.path.join(
             annotation_outpath, "gencode.v45.primary_assembly.annotation_renamed.gtf")
-# mpmap_outpath = os.path.join("data", "mpmap")
-# mpmaplog_path = os.path.join("output", "mpmap")
+map_outpath = os.path.join("data", "mpmap")
+maplog_path = os.path.join("output", "mpmap")
 
 ALL_CONVERT = expand(
 	os.path.join(graph_outpath, "{base}.{suffix}"),
@@ -52,7 +59,13 @@ ALL_CONVERT = expand(
 ALL_INDEX = expand(
 	os.path.join(index_outpath, "{base}.spliced.{suffix}"),
 	base = ['hprc-v1.1-mc-grch38'],
-	suffix = ['gcsa', 'xg', 'dist'])
+	suffix = ['gcsa', 'xg', 'dist']
+)
+
+ALL_MAP = expand(
+	os.path.join(map_outpath, "{sample}.gamp"),
+	sample = testsample
+)
 
 # ALL_INDEXLOGS = expand(
 
@@ -98,6 +111,7 @@ ALL_INDEX = expand(
 ALL_OUTPUTS = []
 ALL_OUTPUTS.extend(ALL_CONVERT)
 ALL_OUTPUTS.extend(ALL_INDEX)
+ALL_OUTPUTS.extend(ALL_MAP)
 # ALL_OUTPUTS.extend(ALL_CONSTRUCT)
 # ALL_OUTPUTS.extend(ALL_TRANSFORM)
 # ALL_OUTPUTS.extend(ALL_SPLIT_GTF)
@@ -110,6 +124,7 @@ rule all:
 		
 include: "rules/convert.smk"
 include: "rules/autoindex.smk"
+include: "rules/mpmap.smk"
 # include: "rules/construct.smk"
 # include: "rules/transform_gtf.smk"
 # include: "rules/subset.smk"
