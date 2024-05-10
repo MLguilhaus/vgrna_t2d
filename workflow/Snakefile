@@ -14,7 +14,7 @@ annotationbase = "gencode.v45.primary_assembly.annotation"
 graphbase = "hprc-v1.1-mc-grch38"
 
 ## Test SRR 
-testsample = ['SRR15881903']
+testsample = "SRR15881903"
 # , 'SRR15881955', 'SRR15881946', 'SRR15881891
 
 ## Load samples & set all columns to strings
@@ -50,22 +50,52 @@ gtf_rn = os.path.join(
 map_outpath = os.path.join("data", "mpmap")
 maplog_path = os.path.join("output", "mpmap")
 
-ALL_CONVERT = expand(
+# ALL_CONVERT = expand(
+# 	os.path.join(graph_outpath, "{base}.{suffix}"),
+# 	base = ['chr22.d9'],
+# 	suffix = ['gfa']
+# )
+
+# ALL_INDEX = expand(
+# 	os.path.join(index_outpath, "{base}.spliced.{suffix}"),
+# 	base = ['hprc-v1.1-mc-grch38'],
+# 	suffix = ['gcsa', 'xg', 'dist']
+# )
+
+ALL_CONSTRUCTVG = expand(
 	os.path.join(graph_outpath, "{base}.{suffix}"),
-	base = ['chr22.d9'],
-	suffix = ['gfa']
+	base = graphbase,
+	suffix = ['vg']
 )
 
-ALL_INDEX = expand(
-	os.path.join(index_outpath, "{base}.spliced.{suffix}"),
-	base = ['hprc-v1.1-mc-grch38'],
-	suffix = ['gcsa', 'xg', 'dist']
-)
+# ALL_CONVERTPG = expand(
+# 	os.path.join(graph_outpath, "{base}.{suffix}"),
+# 	base = graphbase,
+# 	suffix = ['pg']
+# )
 
-ALL_MAP = expand(
-	os.path.join(map_outpath, "{sample}.gamp"),
-	sample = testsample
-)
+# ALL_CONSTRUCTSPL = expand(
+# 	os.path.join(graph_outpath, "{base}.spliced.{suffix}"),
+# 	base = graphbase,
+# 	suffix = ['pg']
+# )
+
+# ALL_PRUNE = expand(
+# 	os.path.join(graph_outpath, "{base}.pruned.{suffix}"),
+# 	base = graphbase,
+# 	suffix = ['default.vg']
+# )
+
+# ALL_GCSA = expand(
+# 	os.path.join(index_outpath, "{base}.{suffix}"),
+# 	base = graphbase,
+# 	suffix = ['gcsa']
+# )
+
+# ALL_MAP = expand(
+# 	os.path.join(map_outpath, "{sample}.gamp"),
+# 	sample = testsample
+# )
 
 # ALL_INDEXLOGS = expand(
 
@@ -109,9 +139,14 @@ ALL_MAP = expand(
 # )
 
 ALL_OUTPUTS = []
-ALL_OUTPUTS.extend(ALL_CONVERT)
-ALL_OUTPUTS.extend(ALL_INDEX)
-ALL_OUTPUTS.extend(ALL_MAP)
+# ALL_OUTPUTS.extend(ALL_CONVERT)
+# ALL_OUTPUTS.extend(ALL_INDEX)
+ALL_OUTPUTS.extend(ALL_CONSTRUCTVG)
+# ALL_OUTPUTS.extend(ALL_CONVERTPG)
+# ALL_OUTPUTS.extend(ALL_CONSTRUCTSPL)
+# ALL_OUTPUTS.extend(ALL_PRUNE)
+# ALL_OUTPUTS.extend(ALL_GCSA)
+# ALL_OUTPUTS.extend(ALL_MAP)
 # ALL_OUTPUTS.extend(ALL_CONSTRUCT)
 # ALL_OUTPUTS.extend(ALL_TRANSFORM)
 # ALL_OUTPUTS.extend(ALL_SPLIT_GTF)
@@ -121,10 +156,15 @@ ALL_OUTPUTS.extend(ALL_MAP)
 rule all:
 	input:
 		ALL_OUTPUTS
-		
-include: "rules/convert.smk"
-include: "rules/autoindex.smk"
-include: "rules/mpmap.smk"
+
+# include: "rules/convert.smk"
+# include: "rules/autoindex.smk"
+include: "rules/constructvg.smk"
+# include: "rules/convertpg.smk"
+# include: "rules/constructspl.smk"
+# include: "rules/prune.smk"
+# include: "rules/gcsa_index.smk"
+# include: "rules/mpmap.smk"
 # include: "rules/construct.smk"
 # include: "rules/transform_gtf.smk"
 # include: "rules/subset.smk"

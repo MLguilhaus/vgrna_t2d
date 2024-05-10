@@ -26,10 +26,10 @@ rule construct:
 
         vg rna \
         -t {threads} \
-        -p \
         -e \
         -n {input.gtf} \
         {input.pg} > {output.spl_pg} \
+        -p &>> {log} 
 
 
         """

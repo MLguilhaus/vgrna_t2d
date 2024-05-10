@@ -15,3 +15,6 @@ chunk:
 
 snarls: 
   algorithm: "integrated"
+
+mpmap:
+  nt_type: "rna"

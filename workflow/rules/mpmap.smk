@@ -4,11 +4,11 @@ rule mpmap:
         xg = os.path.join(index_outpath, "hprc-v1.1-mc-grch38.spliced.xg"),
         dist = os.path.join(index_outpath, "hprc-v1.1-mc-grch38.spliced.dist"),
         read1 = os.path.join(trim_path, "{testsample}_1.fastq.gz"),
-        read2 = os.path.join(trim_path, "{testsample}_1.fastq.gz"),
+        read2 = os.path.join(trim_path, "{testsample}_2.fastq.gz"),
 
 
     output: 
-    gamp = os.path.join(aln_outpath, "{testsample}.gamp")
+        gamp = os.path.join(map_outpath, "{testsample}.gamp")
 
     conda: "../envs/vg.yml"
     log: os.path.join(log_path, "mpmmap", "{testsample}.mpmap.log") 
