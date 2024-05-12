@@ -5,10 +5,10 @@ rule constructvg:
         vcf = vcfpath
 
     output:
-        vg = os.path.join(graph_outpath, graphbase + ".vg")
+        vg = os.path.join(graph_outpath, "{chrnum}." + graphbase + ".vg")
 
     conda: "../envs/vg.yml"
-    log: os.path.join(log_path, "gcsa_index", "constructvg.log") 
+    log: os.path.join(log_path, "gcsa_index", "{chrnum}.constructvg.log") 
     threads: 32
     resources:
         runtime = "8h",
@@ -17,9 +17,10 @@ rule constructvg:
     shell:
         """
 
-        vg construct 
-        -t {threads} \
-        -a -p \
+        vg construct \
+        -p -t {threads} \
+        -R {wildcards.chrnum} \
+        -C -a \
         -v {input.vcf} \
         -r {input.fa} > {output.vg}
 

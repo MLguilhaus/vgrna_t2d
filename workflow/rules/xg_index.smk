@@ -1,6 +1,6 @@
 rule xg_index:
     input: 
-        spl_pg = os.path.join(graph_outpath, "chr22-spliced.pg")
+        spl_pg = os.path.join(graph_outpath, "chr22." + graphbase + ".spliced.pg")
     output:
         xg = os.path.join(index_outpath, "chr22-spliced.xg"),
 
@@ -18,9 +18,10 @@ rule xg_index:
 
         vg index \
         -t {threads} \
+        -p >> {log} \
         -b {params.temp_dir} \
         {input.spl_pg} \
-        -x {output.xg} \
-        -p > {log} 
+        -x {output.xg} 
 
         """
+

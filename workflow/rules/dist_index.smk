@@ -1,6 +1,6 @@
 rule trivial_snarls:
     input: 
-        spl_pg = os.path.join(graph_outpath, "chr22-spliced.pg")
+        spl_pg = os.path.join(graph_outpath, "chr22." + graphbase + ".spliced.pg")
     output:
         trivial = os.path.join(index_outpath, "chr22.trivial.snarls"),
 
@@ -76,6 +76,6 @@ rule dist_index:
         -x {input.xg} \
         -s {input.snarls} \
         -j {output.dist} \
-        -p > {log} 
+        -p >> {log} 
 
         """

@@ -50,11 +50,12 @@ gtf_rn = os.path.join(
 map_outpath = os.path.join("data", "mpmap")
 maplog_path = os.path.join("output", "mpmap")
 
-# ALL_CONVERT = expand(
-# 	os.path.join(graph_outpath, "{base}.{suffix}"),
-# 	base = ['chr22.d9'],
-# 	suffix = ['gfa']
-# )
+ALL_CONVERT = expand(
+	os.path.join(graph_outpath, "{chrnum}.{base}.{suffix}"),
+	chrnum = ['chr22'],
+	base = graphbase,
+	suffix = ['pg']
+)
 
 # ALL_INDEX = expand(
 # 	os.path.join(index_outpath, "{base}.spliced.{suffix}"),
@@ -62,23 +63,26 @@ maplog_path = os.path.join("output", "mpmap")
 # 	suffix = ['gcsa', 'xg', 'dist']
 # )
 
-ALL_CONSTRUCTVG = expand(
-	os.path.join(graph_outpath, "{base}.{suffix}"),
-	base = graphbase,
-	suffix = ['vg']
-)
+# ALL_CONSTRUCTVG = expand(
+# 	os.path.join(graph_outpath, "{chrnum}.{base}.{suffix}"),
+# 	chrnum = chrnum,
+# 	base = graphbase,
+# 	suffix = ['vg']
+# )
 
 # ALL_CONVERTPG = expand(
-# 	os.path.join(graph_outpath, "{base}.{suffix}"),
+# 	os.path.join(graph_outpath, "{chrnum}.{base}.{suffix}"),
+# 	chrnum = ['chr22'],
 # 	base = graphbase,
 # 	suffix = ['pg']
 # )
 
-# ALL_CONSTRUCTSPL = expand(
-# 	os.path.join(graph_outpath, "{base}.spliced.{suffix}"),
-# 	base = graphbase,
-# 	suffix = ['pg']
-# )
+ALL_CONSTRUCTSPL = expand(
+	os.path.join(graph_outpath, "{chrnum}.{base}.spliced.{suffix}"),
+	chrnum = ['chr22'],
+	base = graphbase,
+	suffix = ['pg']
+)
 
 # ALL_PRUNE = expand(
 # 	os.path.join(graph_outpath, "{base}.pruned.{suffix}"),
@@ -122,12 +126,12 @@ ALL_CONSTRUCTVG = expand(
 # 	chrnum = chrnum
 # )
 
-# ALL_XG = expand(
-# 	os.path.join(
-# 			index_outpath, "{base}-spliced.{suffix}"),
-# 	base = ['chr22'],
-# 	suffix = ['xg']		
-# )
+ALL_XG = expand(
+	os.path.join(
+			index_outpath, "{base}-spliced.{suffix}"),
+	base = ['chr22'],
+	suffix = ['xg']		
+)
 
 ## Add this in when running out of storage or ready to do rpvg
 ## OR want to gen pantranscriptome
@@ -139,34 +143,34 @@ ALL_CONSTRUCTVG = expand(
 # )
 
 ALL_OUTPUTS = []
-# ALL_OUTPUTS.extend(ALL_CONVERT)
+ALL_OUTPUTS.extend(ALL_CONVERT)
 # ALL_OUTPUTS.extend(ALL_INDEX)
-ALL_OUTPUTS.extend(ALL_CONSTRUCTVG)
+# ALL_OUTPUTS.extend(ALL_CONSTRUCTVG)
 # ALL_OUTPUTS.extend(ALL_CONVERTPG)
-# ALL_OUTPUTS.extend(ALL_CONSTRUCTSPL)
+ALL_OUTPUTS.extend(ALL_CONSTRUCTSPL)
 # ALL_OUTPUTS.extend(ALL_PRUNE)
 # ALL_OUTPUTS.extend(ALL_GCSA)
 # ALL_OUTPUTS.extend(ALL_MAP)
 # ALL_OUTPUTS.extend(ALL_CONSTRUCT)
 # ALL_OUTPUTS.extend(ALL_TRANSFORM)
 # ALL_OUTPUTS.extend(ALL_SPLIT_GTF)
-# ALL_OUTPUTS.extend(ALL_XG)
+ALL_OUTPUTS.extend(ALL_XG)
 # ALL_OUTPUTS.extend(ALL_GBWT)
 
 rule all:
 	input:
 		ALL_OUTPUTS
 
-# include: "rules/convert.smk"
+include: "rules/convert.smk"
 # include: "rules/autoindex.smk"
-include: "rules/constructvg.smk"
+# include: "rules/constructvg.smk"
 # include: "rules/convertpg.smk"
-# include: "rules/constructspl.smk"
+include: "rules/constructspl.smk"
 # include: "rules/prune.smk"
 # include: "rules/gcsa_index.smk"
 # include: "rules/mpmap.smk"
 # include: "rules/construct.smk"
 # include: "rules/transform_gtf.smk"
 # include: "rules/subset.smk"
-# include: "rules/xg_index.smk"
+include: "rules/xg_index.smk"
 # include: "rules/gbwt_index.smk"

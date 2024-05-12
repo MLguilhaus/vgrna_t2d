@@ -1,12 +1,12 @@
 rule convertpg:
     input: 
-        vg = os.path.join(graph_outpath, graphbase + ".vg")
+        vg = os.path.join(graph_outpath, "chr22." + graphbase + ".vg")
 
     output:
-        pg = os.path.join(graph_outpath, graphbase + ".pg")
+        pg = os.path.join(graph_outpath, "chr22." graphbase + ".pg")
 
     conda: "../envs/vg.yml"
-    log: os.path.join(log_path, "gcsa_index", "convertpg.log") 
+    log: os.path.join(log_path, "gcsa_index", "chr22.convertpg.log") 
     threads: 32
     resources:
         runtime = "8h",

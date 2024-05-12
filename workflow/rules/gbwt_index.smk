@@ -10,13 +10,13 @@
 
 rule gbwt_index:
     input: 
-        vcf = ("would need to get this.vcf.gz"),
+        vcf = vcfpath
         spl_pg = os.path.join(graph_outpath, "chr22-spliced.pg")
     output:
         gbwt = os.path.join(index_outpath, "haplotypes.gbwt"),
 
     conda: "../envs/vg.yml"
-    log: os.path.join(log_path, "gbwt_index", "gbwt_index.log") 
+    log: os.path.join(log_path, "gbwt_index", "chr22.gbwt_index.log") 
     params:
         temp_dir = ("/tmp/vgrna")
     threads: 32
@@ -35,14 +35,12 @@ rule gbwt_index:
         -G {outut.gbwt} \
         -p 2>> {log} 
 
-        # Calculate graph statistics (pre-rna) 
-        vg stats -z -l -r {input.spl_pg}
 
         """
 
 rule hst_gen:
     input: 
-        vcf = ("would need to get this.vcf.gz"),
+        gtf = ("unsure yet if the spl will be with renamed or not update once we know")
         spl_pg = os.path.join(graph_outpath, "chr22-spliced.pg")
     output:
         gbwt = os.path.join(index_outpath, "haplotypes.gbwt"),
@@ -70,13 +68,6 @@ rule hst_gen:
         -f ${OUT_PREFIX}.fa 
         -i ${OUT_PREFIX}.txt ${GRAPH_PREFIX}.pg 
         > ${OUT_PREFIX}_tmp.pg; 
-        
-        mv ${OUT_PREFIX}_tmp.pg ${OUT_PREFIX}.pg; 
-        rm haplotypes.gbwt"
 
-       
-
-        # Calculate graph statistics (post-rna) 
-        vg stats -z -l -r ${OUT_PREFIX}.pg"
 
         """
