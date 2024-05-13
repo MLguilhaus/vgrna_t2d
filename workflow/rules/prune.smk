@@ -22,12 +22,13 @@ rule prune:
 
     shell:
         """
+        
         vg prune \
         -t {threads} \
         -p \
         -r \
         {input.spl_pg} \
-        > {output.pruned} \
+        > {output.pruned} 
         
         """
 
@@ -39,4 +40,4 @@ rule prune:
         # -g {input.gbwt} \
         # -m {output.nodemap} \
         # {input.spl_pg} \
-        # > {output.pruned} \
+        # > {output.pruned} 
