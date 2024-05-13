@@ -36,6 +36,7 @@ rule prune:
         # -t {threads} \
         # -p \
         # -u \
+        # -g {input.gbwt} \
         # -m {output.nodemap} \
         # {input.spl_pg} \
         # > {output.pruned} \

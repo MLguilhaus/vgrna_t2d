@@ -8,7 +8,6 @@ rule trivial_snarls:
     log: os.path.join(log_path, "dist_index", "chr22.trivial_snarls.log") 
     params:
         algo = config['snarls']['algorithm'],
-        temp_dir = ("/tmp")
     threads: 32
     resources:
         runtime = "5h",
@@ -17,13 +16,13 @@ rule trivial_snarls:
     shell:
         """
 
-        # Compute trivial (single edge) snarls for the .pg graph
+        # Compute trivial (single edge) snarls for each .pg graph
+        # Include trivial snarls -T
         vg snarls \
         -t {threads} \
         -A {params.algo} \
         -T {input.spl_pg} \
-        > {output.trivial} \
-        &>> {log}
+        > {output.trivial} 
 
 
         """
@@ -62,7 +61,6 @@ rule dist_index:
     log: os.path.join(log_path, "dist_index", "chr22.dist_index.log") 
     params:
         algo = config['snarls']['algorithm'],
-        temp_dir = ("/tmp")
     threads: 32
     resources:
         runtime = "1h",
@@ -76,6 +74,6 @@ rule dist_index:
         -x {input.xg} \
         -s {input.snarls} \
         -j {output.dist} \
-        -p >> {log} 
+        -p &>> {log} 
 
         """

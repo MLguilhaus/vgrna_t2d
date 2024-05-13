@@ -25,3 +25,8 @@ rule constructvg:
         -r {input.fa} > {output.vg}
 
         """
+# Construct graph for each chr by specifyting the region of VCF -R
+# -C, --region-is-chrom  don't attempt to parse the regions (use when the reference
+# sequence name could be inadvertently parsed as a region)
+#     -a, --alt-paths        save paths for alts of variants by SHA1 hash
+# Used the same code as the Sibbessen paper, the -a makes the paths pretty unreadable but may be required? 

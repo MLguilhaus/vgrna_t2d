@@ -19,3 +19,5 @@ rule convertpg:
         -p {input.vg} > {output.pg}
 
         """
+# This rule was bugged, unsure why. 
+# Something about the indent either in this file or the snakefile

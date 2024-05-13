@@ -40,15 +40,18 @@ rule gbwt_index:
 
 rule hst_gen:
     input: 
-        gtf = ("unsure yet if the spl will be with renamed or not update once we know")
-        spl_pg = os.path.join(graph_outpath, "chr22-spliced.pg")
+        gtf = os.path.join(annotation_outpath, "chr22." + annotationbase + ".gtf"),
+        spl_pg = os.path.join(graph_outpath, "chr22-spliced.pg"),
+        hapgbwt = os.path.join(index_outpath, "chr22.haplotypes.gbwt")
+
     output:
-        gbwt = os.path.join(index_outpath, "haplotypes.gbwt"),
+        fa = os.path.join(index_outpath, "chr22.pt.seq.fa")
+        info = os.path.join( )
+        up_pg = os.path.join(graph_outpath, "chr22." + graphbase + ".htupdated.pg")
+        gbwt = 
 
     conda: "../envs/vg.yml"
     log: os.path.join(log_path, "gbwt_index", "gbwt_index.log") 
-    params:
-        temp_dir = ("/tmp/vgrna")
     threads: 32
     resources:
         runtime = "5h",
@@ -60,10 +63,16 @@ rule hst_gen:
         # Create haplotype-specific transcripts and update graph with default mode
         # Different combinaation of options can give a bi-directional PT or 
         # Keep redundant haplotype-specific transcripts
+        # -o do not topological sort and compact the graph
+        # -r add reference transcripts as embedded paths in the graph
+        # -n transcripts file
+        # -l project transcripts into haplotypes gbwt file
+        # -b write out pantranscriptome as gbwt file, -f fasta file, and -i tsv info table
+
         vg rna \
         -p -t {threads} \
-        -o -r -n ${CHR}.gtf 
-        -l haplotypes.gbwt 
+        -o -r -n {input.gtf} \
+        -l {input.hapgbwt} 
         -b ${OUT_PREFIX}.gbwt 
         -f ${OUT_PREFIX}.fa 
         -i ${OUT_PREFIX}.txt ${GRAPH_PREFIX}.pg 
