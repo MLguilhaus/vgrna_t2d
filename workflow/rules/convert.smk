@@ -1,12 +1,12 @@
 rule convert:
     input:
-        vg = os.path.join(graph_outpath, "chr22." + graphbase + ".vg" )
+        vg = os.path.join(graph_outpath, "vcf_fa_build", "chr22." + graphbase + ".vg" )
 
     output: 
         # pg = os.path.join(graph_outpath, "hprc-v1.1-mc-grch38.pg")
         # chrpg = os.path.join(graph_outpath, "chr22.d9.pg")
         # chrgfa = os.path.join(graph_outpath, "chr22.d9.gfa")
-        pg = os.path.join(graph_outpath, "chr22." + graphbase + ".pg")
+        pg = os.path.join(graph_outpath, "vcf_fa_build", "chr22." + graphbase + ".pg")
 
     conda: "../envs/vg.yml"
     log: os.path.join(log_path, "convert", "chr22pg.convert.log") 

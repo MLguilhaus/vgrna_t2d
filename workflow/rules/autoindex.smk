@@ -1,18 +1,19 @@
 # # So many issues with doing this from the HPRC graph as a whole
 # # Also difficult without the haplotype gtf file (which we could generate)
 # # Many issues stem from memory requirements (200GB was the most I gave)
-# rule autoindex:
-#     input:
-#         gfa = os.path.join(graph_outpath, "chr22.d9.gfa"),
-#         chr_gtf = os.path.join(
-#             annotation_outpath, "chr22." + annotationbase + ".gtf" 
-#         ),
+### Cannot do from gfa with gencode gtf as path names dont match. Try with that plus vcf 
+rule autoindex:
+    input:
+        gfa = os.path.join(graph_outpath, "hprc_gfa_build", "chr22.d9.gfa"),
+        gtf = os.path.join(
+            annotation_outpath, "chr22." + annotationbase + ".gtf" ),
+         vcf = vcfpath,
 
-#     output: 
-#         gcsa = os.path.join(index_outpath, "chr22.d9.spliced.gcsa"),
-#         xg = os.path.join(index_outpath, "chr22.d9.spliced.xg"),
-#         dist = os.path.join(index_outpath, "chr22.d9.spliced.dist")
-#     # input:
+    output: 
+        gcsa = os.path.join(index_outpath, "chr22", "chr22.d9.spliced.gcsa"),
+        xg = os.path.join(index_outpath, "chr22", "chr22.d9.spliced.xg"),
+        dist = os.path.join(index_outpath, "chr22", "chr22.d9.spliced.dist")
+    # input:
 #     #     #  gfa = gfa_path,
 #     #     gfa = gfa_full_path,
 #     #     gtf = gtf_rn,
@@ -22,55 +23,16 @@
 #     #     xg = os.path.join(index_outpath, "hprc-v1.1-mc-grch38_spliced.xg"),
 #     #     dist = os.path.join(index_outpath, "hprc-v1.1-mc-grch38_spliced.dist")   
 
-#     conda: "../envs/vg.yml"
-#     log: os.path.join(log_path, "autoindex", "chr22.autoindex.log") 
-#     params:
-#         workflow_a = config['autoindex']['workflow_a'],
-#         workflow_b = config['autoindex']['workflow_b'],
-#         out_prefix = os.path.join(index_outpath, "chr22.d9.spliced"),
-#         temp_dir = ("/tmp")
-#     threads: 32
-#     resources:
-#         runtime = "6h",
-#         mem_mb = 140000,
-
-#     shell:
-#         """
-
-#         vg autoindex \
-#             -t {threads} \
-#             -w {params.workflow_a} \
-#             -w {params.workflow_b} \
-#             -T {params.temp_dir} \
-#             -p {params.out_prefix} \
-#             -M {resources.mem_mb} \
-#             -g {input.gfa} \
-#             -x {input.chr_gtf} \
-#             -V 2 &>> {log}
-
-#         """
-
-rule autoindex:
-    input:
-        fa = refpath,
-        vcf = vcfpath,
-        gtf = gtf_path
-
-    output: 
-        gcsa = os.path.join(index_outpath, "hprc-v1.1-mc-grch38.spliced.gcsa"),
-        xg = os.path.join(index_outpath, "hprc-v1.1-mc-grch38.spliced.xg"),
-        dist = os.path.join(index_outpath, "hprc-v1.1-mc-grch38.spliced.dist") 
-
     conda: "../envs/vg.yml"
-    log: os.path.join(log_path, "autoindex", "vcf.fa.autoindex.log") 
+    log: os.path.join(log_path, "autoindex", "chr22gfa.autoindex.log") 
     params:
         workflow_a = config['autoindex']['workflow_a'],
         workflow_b = config['autoindex']['workflow_b'],
-        out_prefix = os.path.join(index_outpath, "hprc-v1.1-mc-grch38.spliced"),
+        out_prefix = os.path.join(index_outpath, "chr22", "chr22.d9.spliced"),
         temp_dir = ("/tmp")
     threads: 32
     resources:
-        runtime = "16h",
+        runtime = "6h",
         mem_mb = 200000,
 
     shell:
@@ -84,11 +46,53 @@ rule autoindex:
             -p {params.out_prefix} \
             -M {resources.mem_mb} \
             -x {input.gtf} \
-            -r {input.fa} \
             -v {input.vcf} \
+            -g {input.gfa} \
             -V 2 &>> {log}
 
+
         """
+
+# Below worked almost to completion > Whole genome starting from linear and variants 
+# rule autoindex:
+#     input:
+#         fa = refpath,
+#         vcf = vcfpath,
+#         gtf = gtf_path
+
+#     output: 
+#         gcsa = os.path.join(index_outpath, "hprc-v1.1-mc-grch38.spliced.gcsa"),
+#         xg = os.path.join(index_outpath, "hprc-v1.1-mc-grch38.spliced.xg"),
+#         dist = os.path.join(index_outpath, "hprc-v1.1-mc-grch38.spliced.dist") 
+
+#     conda: "../envs/vg.yml"
+#     log: os.path.join(log_path, "autoindex", "vcf.fa.autoindex.log") 
+#     params:
+#         workflow_a = config['autoindex']['workflow_a'],
+#         workflow_b = config['autoindex']['workflow_b'],
+#         out_prefix = os.path.join(index_outpath, "hprc-v1.1-mc-grch38.spliced"),
+#         temp_dir = ("/tmp")
+#     threads: 32
+#     resources:
+#         runtime = "16h",
+#         mem_mb = 200000,
+
+#     shell:
+#         """
+
+#         vg autoindex \
+#             -t {threads} \
+#             -w {params.workflow_a} \
+#             -w {params.workflow_b} \
+#             -T {params.temp_dir} \
+#             -p {params.out_prefix} \
+#             -M {resources.mem_mb} \
+#             -x {input.gtf} \
+#             -r {input.fa} \
+#             -v {input.vcf} \
+#             -V 2 &>> {log}
+
+#         """
         
 # rule copy_index_logs:
 #     input:
@@ -107,6 +111,22 @@ rule autoindex:
 #         cp {input} {output}
   
 #         """
+
+
+
+
+
+
+# vg autoindex             
+# -t 32 
+# -w mpmap 
+# -w rpvg 
+# -T /tmp 
+# -p data/index/chr22.d9.spliced 
+# -M 140000 
+# -g data/graph/chr22.d9.gfa  
+# -x data/annotation/chr22.gencode.v45.primary_assembly.annotation.gtf             
+# -V 2 &>> workflow/logs/autoindex/chr22.autoindex.log
 
 ### May be able to run this still with GFA but need to check gtf file
 ### Also will need to use unclipped graph and ensure #0 is removed from path names?

@@ -10,15 +10,14 @@
 
 rule gbwt_index:
     input: 
-        vcf = vcfpath
-        spl_pg = os.path.join(graph_outpath, "chr22-spliced.pg")
+        vcf = vcfpath,
+        spl_pg = os.path.join(graph_outpath, "vcf_fa_build",
+         "chr22." + graphbase + ".spliced.pg")
     output:
-        gbwt = os.path.join(index_outpath, "haplotypes.gbwt"),
+        gbwt = os.path.join(index_outpath, "chr22", "chr22.haplotypes.gbwt"),
 
     conda: "../envs/vg.yml"
     log: os.path.join(log_path, "gbwt_index", "chr22.gbwt_index.log") 
-    params:
-        temp_dir = ("/tmp/vgrna")
     threads: 32
     resources:
         runtime = "5h",
@@ -32,7 +31,7 @@ rule gbwt_index:
         -t {threads} \
         -v {input.vcf} \
         {input.spl_pg} \
-        -G {outut.gbwt} \
+        -G {output.gbwt} \
         -p 2>> {log} 
 
 
@@ -41,14 +40,15 @@ rule gbwt_index:
 rule hst_gen:
     input: 
         gtf = os.path.join(annotation_outpath, "chr22." + annotationbase + ".gtf"),
-        spl_pg = os.path.join(graph_outpath, "chr22-spliced.pg"),
-        hapgbwt = os.path.join(index_outpath, "chr22.haplotypes.gbwt")
+        spl_pg = os.path.join(graph_outpath, "vcf_fa_build",
+         "chr22." + graphbase + ".spliced.pg"),
+        hapgbwt = os.path.join(index_outpath, "chr22", "chr22.haplotypes.gbwt")
 
     output:
-        fa = os.path.join(index_outpath, "chr22.pt.seq.fa")
-        info = os.path.join( )
-        up_pg = os.path.join(graph_outpath, "chr22." + graphbase + ".htupdated.pg")
-        gbwt = 
+        fa = os.path.join(index_outpath, "chr22", "chr22.pt.seq.fa"),
+        info = os.path.join(index_outpath, "chr22", "hpltx.info.txt"),
+        up_pg = os.path.join(graph_outpath, "chr22." + graphbase + ".htupdated.pg"),
+        gbwt = os.path.join(index_outpath, "chr22", "chr22.gbwt")
 
     conda: "../envs/vg.yml"
     log: os.path.join(log_path, "gbwt_index", "gbwt_index.log") 
@@ -72,11 +72,11 @@ rule hst_gen:
         vg rna \
         -p -t {threads} \
         -o -r -n {input.gtf} \
-        -l {input.hapgbwt} 
-        -b ${OUT_PREFIX}.gbwt 
-        -f ${OUT_PREFIX}.fa 
-        -i ${OUT_PREFIX}.txt ${GRAPH_PREFIX}.pg 
-        > ${OUT_PREFIX}_tmp.pg; 
+        -l {input.hapgbwt} \
+        -b {output.gbwt} \
+        -f {output.fa} \
+        -i {output.info} {input.spl_pg} \
+        > {output.up_pg}
 
 
         """
