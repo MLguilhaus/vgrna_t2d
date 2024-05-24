@@ -3,11 +3,11 @@ rule constructspl:
         # gtf = gtf_path,
         # gtf = os.path.join(annotation_outpath, "chr22.renamed.gtf")
         gtf = os.path.join(annotation_outpath, "chr22." + annotationbase + ".gtf"),
-        # pg = os.path.join(graph_outpath, "chr22." + graphbase + ".pg")
-        pg = os.path.join(graph_outpath, "hprc_gfa_build", "chr22.d9.pg")
+        pg = os.path.join(graph_outpath, "vcf_fa_build", "chr22." + graphbase + ".pg")
+        # pg = os.path.join(graph_outpath, "hprc_gfa_build", "chr22.d9.pg")
 
     output:
-        spl_pg = os.path.join(graph_outpath, "chr22.d9.spliced.pg")
+        spl_pg = os.path.join(graph_outpath, "vcf_fa_build", "chr22.d9.spliced.pg")
 
     conda: "../envs/vg.yml"
     log: os.path.join(log_path, "constructspl", "chr22.d9.constructspl.log") 

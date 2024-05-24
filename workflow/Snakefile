@@ -63,12 +63,13 @@ ALL_INDEX = expand(
 	suffix = ['gcsa', 'xg', 'dist']
 )
 
-# ALL_CONSTRUCTVG = expand(
-# 	os.path.join(graph_outpath, "{chrnum}.{base}.{suffix}"),
-# 	chrnum = chrnum,
-# 	base = graphbase,
-# 	suffix = ['vg']
-# )
+ALL_CONSTRUCTVG = expand(
+	os.path.join(graph_outpath, "{build}", "{chrnum}.{base}.{suffix}"),
+	build = ['vcf_fa_build'],
+	chrnum = chrnum,
+	base = graphbase,
+	suffix = ['vg']
+)
 
 # ALL_CONVERTPG = expand(
 # 	os.path.join(graph_outpath, "{chrnum}.{base}.{suffix}"),
@@ -77,13 +78,14 @@ ALL_INDEX = expand(
 # 	suffix = ['pg']
 # )
 
-# # build from vcf/fa naming
-# ALL_CONSTRUCTSPL = expand(
-# 	os.path.join(graph_outpath, "{chrnum}.{base}.spliced.{suffix}"),
-# 	chrnum = ['chr22'],
-# 	base = graphbase,
-# 	suffix = ['pg']
-# )
+# build from vcf/fa naming
+ALL_CONSTRUCTSPL = expand(
+	os.path.join(graph_outpath, "{build}", "{chrnum}.{base}.spliced.{suffix}"),
+	build = ['vcf_fa_build'],
+	chrnum = ['chr22'],
+	base = graphbase,
+	suffix = ['pg']
+)
 
 # Build from HPRC naming
 # ALL_CONSTRUCTSPL = expand(
@@ -92,17 +94,6 @@ ALL_INDEX = expand(
 # 	suffix = ['pg']
 # )
 
-# ALL_PRUNE = expand(
-# 	os.path.join(graph_outpath, "{base}.pruned.{suffix}"),
-# 	base = graphbase,
-# 	suffix = ['default.vg']
-# )
-
-# ALL_GCSA = expand(
-# 	os.path.join(index_outpath, "{base}.{suffix}"),
-# 	base = graphbase,
-# 	suffix = ['gcsa']
-# )
 
 # ALL_MAP = expand(
 # 	os.path.join(map_outpath, "{sample}.gamp"),
@@ -134,12 +125,6 @@ ALL_INDEX = expand(
 # 	chrnum = chrnum
 # )
 
-# ALL_XG = expand(
-# 	os.path.join(
-# 			index_outpath, "{base}-spliced.{suffix}"),
-# 	base = ['chr22'],
-# 	suffix = ['xg']		
-# )
 
 ## Add this in when running out of storage or ready to do rpvg
 ## OR want to gen pantranscriptome
@@ -158,21 +143,57 @@ ALL_GBWT = expand(
 		suffix = ['gbwt']
 )
 
+ALL_XG = expand(
+	os.path.join(
+			index_outpath, "chr22", "{base}.spliced.htupdated.{suffix}"),
+	base = ['chr22'],
+	suffix = ['xg']		
+)
+
+# add trivial if using for dist, option -s removed?
+ALL_TRIV = expand(
+	os.path.join(
+			index_outpath, "chr22", "{base}.snarls"),
+	base = ['chr22']	
+)
+
+ALL_DIST = expand(
+	os.path.join(
+			index_outpath, "chr22", "{base}.spliced.htupdated.{suffix}"),
+	base = ['chr22'],
+	suffix = ['dist']		
+)
+
+ALL_PRUNE = expand(
+    os.path.join(graph_outpath, "{build}", "{chrnum}." + graphbase + ".pruned.vg"),
+    build = ['vcf_fa_build'],
+    chrnum = ['chr22']
+)
+
+ALL_GCSA = expand(
+        os.path.join(index_outpath, "{subdir}", "{chrnum}.gcsa"),
+        subdir = ['chr22'],
+        chrnum = ['chr22']
+)
+
 ALL_OUTPUTS = []
 ALL_OUTPUTS.extend(ALL_CONVERT)
 # ALL_OUTPUTS.extend(ALL_INDEX)
-# ALL_OUTPUTS.extend(ALL_CONSTRUCTVG)
+ALL_OUTPUTS.extend(ALL_CONSTRUCTVG)
 # ALL_OUTPUTS.extend(ALL_CONVERTPG)
-# ALL_OUTPUTS.extend(ALL_CONSTRUCTSPL)
+ALL_OUTPUTS.extend(ALL_CONSTRUCTSPL)
 ALL_OUTPUTS.extend(ALL_HAPL)
 ALL_OUTPUTS.extend(ALL_GBWT)
-# ALL_OUTPUTS.extend(ALL_PRUNE)
-# ALL_OUTPUTS.extend(ALL_GCSA)
+ALL_OUTPUTS.extend(ALL_XG)
+ALL_OUTPUTS.extend(ALL_TRIV)
+ALL_OUTPUTS.extend(ALL_DIST)
+ALL_OUTPUTS.extend(ALL_PRUNE)
+ALL_OUTPUTS.extend(ALL_GCSA)
 # ALL_OUTPUTS.extend(ALL_MAP)
 # ALL_OUTPUTS.extend(ALL_CONSTRUCT)
 # ALL_OUTPUTS.extend(ALL_TRANSFORM)
 # ALL_OUTPUTS.extend(ALL_SPLIT_GTF)
-# ALL_OUTPUTS.extend(ALL_XG)
+
 
 
 rule all:
@@ -181,14 +202,15 @@ rule all:
 
 include: "rules/convert.smk"
 include: "rules/autoindex.smk"
-# include: "rules/constructvg.smk"
+include: "rules/constructvg.smk"
 # include: "rules/convertpg.smk"
-# include: "rules/constructspl.smk"
-# include: "rules/prune.smk"
-# include: "rules/gcsa_index.smk"
+include: "rules/constructspl.smk"
 # include: "rules/mpmap.smk"
 # include: "rules/construct.smk"
 # include: "rules/transform_gtf.smk"
 # include: "rules/subset.smk"
-# include: "rules/xg_index.smk"
 include: "rules/gbwt_index.smk"
+include: "rules/xg_index.smk"
+include: "rules/dist_index.smk"
+include: "rules/prune.smk"
+include: "rules/gcsa_index.smk"

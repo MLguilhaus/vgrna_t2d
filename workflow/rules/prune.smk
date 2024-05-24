@@ -2,17 +2,22 @@
 #will do this for each spl_chr .pg
 rule prune:
     input: 
-        spl_pg = os.path.join(graph_outpath, graphbase + "spliced.pg")
+        spl_pg = expand(
+            os.path.join(graph_outpath, "{build}", "{chrnum}." + graphbase + ".htupdated.pg"),
+            build = ['vcf_fa_build'],
+            chrnum = ['chr22'])
         # gbwt = os.path.join(
         #     index_outpath, graphbase + "spliced.haplotx.gbwt")
     output:
-        pruned = os.path.join(
-            graph_outpath, graphbase + "spliced.pruned.vg")
+        pruned = expand(
+            os.path.join(graph_outpath, "{build}", "{chrnum}." + graphbase + ".pruned.vg"),
+            build = ['vcf_fa_build'],
+            chrnum = ['chr22'])
         # nodemap = os.path.join(
         #     graph_outpath, graphbase + "spliced.node_mappings")
 
     conda: "../envs/vg.yml"
-    log: os.path.join(log_path, "gcsa_index", "prune.log") 
+    log: os.path.join(log_path, "prune", "prune.log") 
     params:
         temp_dir = ("/tmp")
     threads: 32

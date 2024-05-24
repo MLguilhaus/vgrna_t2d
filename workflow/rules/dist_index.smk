@@ -1,8 +1,9 @@
 rule trivial_snarls:
     input: 
-        spl_pg = os.path.join(graph_outpath, "chr22." + graphbase + ".spliced.pg")
+        spl_pg = os.path.join(graph_outpath, "vcf_fa_build", "chr22." + graphbase + ".htupdated.pg")
     output:
-        trivial = os.path.join(index_outpath, "chr22.trivial.snarls"),
+        # trivial = os.path.join(index_outpath, "chr22", "chr22.trivial.snarls"),
+        snarls = os.path.join(index_outpath, "chr22", "chr22.snarls"),
 
     conda: "../envs/vg.yml"
     log: os.path.join(log_path, "dist_index", "chr22.trivial_snarls.log") 
@@ -22,7 +23,7 @@ rule trivial_snarls:
         -t {threads} \
         -A {params.algo} \
         -T {input.spl_pg} \
-        > {output.trivial} 
+        > {output.snarls} 
 
 
         """
@@ -52,10 +53,10 @@ rule trivial_snarls:
 # again for whole genome graph, remove the chr and do on the mergered xg & snarls
 rule dist_index:
     input: 
-        xg = os.path.join(index_outpath, "chr22-spliced.xg"),
-        snarls = os.path.join(index_outpath, "chr22.trivial.snarls")
+        xg = os.path.join(index_outpath, "chr22", "chr22.spliced.htupdated.xg"),
+        # snarls = os.path.join(index_outpath, "chr22", "chr22.trivial.snarls")
     output:
-        dist = os.path.join(index_outpath, "chr22-spliced.dist"),
+        dist = os.path.join(index_outpath, "chr22", "chr22.spliced.htupdated.dist"),
 
     conda: "../envs/vg.yml"
     log: os.path.join(log_path, "dist_index", "chr22.dist_index.log") 
@@ -72,8 +73,9 @@ rule dist_index:
         vg index \
         -t {threads} \
         -x {input.xg} \
-        -s {input.snarls} \
         -j {output.dist} \
-        -p &>> {log} 
+        -p 2>> {log} 
 
         """
+#         -s {input.snarls} \
+## -s should be an option but it has been removed?
