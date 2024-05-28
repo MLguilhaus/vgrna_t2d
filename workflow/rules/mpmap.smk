@@ -1,22 +1,41 @@
 rule mpmap:
     input:
-        gcsa = os.path.join(index_outpath, "hprc-v1.1-mc-grch38.spliced.gcsa"),
-        xg = os.path.join(index_outpath, "hprc-v1.1-mc-grch38.spliced.xg"),
-        dist = os.path.join(index_outpath, "hprc-v1.1-mc-grch38.spliced.dist"),
-        read1 = os.path.join(trim_path, "{testsample}_1.fastq.gz"),
-        read2 = os.path.join(trim_path, "{testsample}_2.fastq.gz"),
+        gcsa = expand(
+            os.path.join(index_outpath, "{build}", "{base}.{suffix}"),
+            build = ['chr22'],
+            base = ['chr22'],
+            suffix = ['gcsa'],      
+        ),
+        xg = expand(
+            os.path.join(index_outpath, "{build}", "{base}.{suffix}"),
+            build = ['chr22'],
+            base = ['chr22.spliced.htupdated'],
+            suffix = ['xg'],      
+        ),
+        dist = expand(
+            os.path.join(index_outpath, "{build}", "{base}.{suffix}"),
+            build = ['chr22'],
+            base = ['chr22.spliced.htupdated'],
+            suffix = ['dist'],        
+        ),
+        read1 = os.path.join("data", "reads", "{testsample}_1.fastq.gz"),
+        read2 = os.path.join("data", "reads", "{testsample}_2.fastq.gz")
+        # read1 = read1_path,
+        # read2 = read2_path
+        # read1 = os.path.join(trim_path, "{testsample}_1.fastq.gz"),
+        # read2 = os.path.join(trim_path, "{testsample}_2.fastq.gz"),
 
 
     output: 
         gamp = os.path.join(map_outpath, "{testsample}.gamp")
 
     conda: "../envs/vg.yml"
-    log: os.path.join(log_path, "mpmmap", "{testsample}.mpmap.log") 
+    log: os.path.join(log_path, "mpmap", "{testsample}.mpmap.log") 
     params:
         nt = config['mpmap']['nt_type']
     threads: 32
     resources:
-        runtime = "6h",
+        runtime = "12h",
         mem_mb = 140000,
 
     shell:
@@ -30,7 +49,7 @@ rule mpmap:
         -g {input.gcsa} \
         -d {input.dist} \
         -f {input.read1} \
-        -f {input.read2} > {output.gamp}
+        -f {input.read2} > {output.gamp} 2>> {log} 
 
         """
 

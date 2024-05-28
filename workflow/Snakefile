@@ -16,6 +16,8 @@ graphbase = "hprc-v1.1-mc-grch38"
 ## Test SRR 
 testsample = "SRR15881903"
 # , 'SRR15881955', 'SRR15881946', 'SRR15881891
+# read1_path = ("hpcfs/users/a1627307/star_t2d/star_t2d/data/fastq/trimmed/SRR15881903_1.fastq.gz")
+# read2_path = ("hpcfs/users/a1627307/star_t2d/star_t2d/data/fastq/trimmed/SRR15881903_2.fastq.gz")
 
 ## Load samples & set all columns to strings
 df = pd.read_table(config['samples'])
@@ -47,7 +49,7 @@ annotation_outpath = os.path.join("data", "annotation")
 index_outpath = os.path.join("data", "index")
 gtf_rn = os.path.join(
             annotation_outpath, "gencode.v45.primary_assembly.annotation_renamed.gtf")
-map_outpath = os.path.join("data", "mpmap")
+map_outpath = os.path.join("output", "mpmap")
 maplog_path = os.path.join("output", "mpmap")
 
 ALL_CONVERT = expand(
@@ -64,7 +66,7 @@ ALL_INDEX = expand(
 )
 
 ALL_CONSTRUCTVG = expand(
-	os.path.join(graph_outpath, "{build}", "{chrnum}.{base}.{suffix}"),
+	os.path.join(graph_outpath, "{build}", "vg", "{chrnum}.{base}.{suffix}"),
 	build = ['vcf_fa_build'],
 	chrnum = chrnum,
 	base = graphbase,
@@ -92,16 +94,6 @@ ALL_CONSTRUCTSPL = expand(
 # 	os.path.join(graph_outpath, "{chrnum}.d9.spliced.{suffix}"),
 # 	chrnum = ['chr22'],
 # 	suffix = ['pg']
-# )
-
-
-# ALL_MAP = expand(
-# 	os.path.join(map_outpath, "{sample}.gamp"),
-# 	sample = testsample
-# )
-
-# ALL_INDEXLOGS = expand(
-
 # )
 
 # ALL_CONVERT = expand(
@@ -176,6 +168,11 @@ ALL_GCSA = expand(
         chrnum = ['chr22']
 )
 
+ALL_MAP = expand(
+	os.path.join(map_outpath, "{sample}.gamp"),
+	sample = testsample
+)
+
 ALL_OUTPUTS = []
 ALL_OUTPUTS.extend(ALL_CONVERT)
 # ALL_OUTPUTS.extend(ALL_INDEX)
@@ -189,7 +186,7 @@ ALL_OUTPUTS.extend(ALL_TRIV)
 ALL_OUTPUTS.extend(ALL_DIST)
 ALL_OUTPUTS.extend(ALL_PRUNE)
 ALL_OUTPUTS.extend(ALL_GCSA)
-# ALL_OUTPUTS.extend(ALL_MAP)
+ALL_OUTPUTS.extend(ALL_MAP)
 # ALL_OUTPUTS.extend(ALL_CONSTRUCT)
 # ALL_OUTPUTS.extend(ALL_TRANSFORM)
 # ALL_OUTPUTS.extend(ALL_SPLIT_GTF)
@@ -205,7 +202,6 @@ include: "rules/autoindex.smk"
 include: "rules/constructvg.smk"
 # include: "rules/convertpg.smk"
 include: "rules/constructspl.smk"
-# include: "rules/mpmap.smk"
 # include: "rules/construct.smk"
 # include: "rules/transform_gtf.smk"
 # include: "rules/subset.smk"
@@ -214,3 +210,4 @@ include: "rules/xg_index.smk"
 include: "rules/dist_index.smk"
 include: "rules/prune.smk"
 include: "rules/gcsa_index.smk"
+include: "rules/mpmap.smk"

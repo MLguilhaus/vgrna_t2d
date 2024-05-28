@@ -5,7 +5,7 @@ rule constructvg:
         vcf = vcfpath
 
     output:
-        vg = os.path.join(graph_outpath, "vcf_fa_build", "{chrnum}." + graphbase + ".vg")
+        vg = os.path.join(graph_outpath, "vcf_fa_build", "vg", "{chrnum}." + graphbase + ".vg")
 
     conda: "../envs/vg.yml"
     log: os.path.join(log_path, "gcsa_index", "{chrnum}.constructvg.log") 
