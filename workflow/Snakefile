@@ -198,13 +198,13 @@ ALL_VCF_XGPATHS = expand(
 	nam = ['xg']
 )
 
-ALL_HPRC_XGPATHS = expand(
-	os.path.join(stats_outpath, "{stat}", "{build}", "{base}.{nam}.tsv"),
-	build = ['HPRC'],
-	stat = ['xgpaths'],
-	base = ['HPRC'],
-	nam = ['xg']
-)
+# ALL_HPRC_XGPATHS = expand(
+# 	os.path.join(stats_outpath, "{stat}", "{build}", "{base}.{nam}.tsv"),
+# 	build = ['HPRC'],
+# 	stat = ['xgpaths'],
+# 	base = ['HPRC'],
+# 	nam = ['xg']
+# )
 
 # ALL_STATS = expand(
 # 	os.path.join(stats_outpath, "{build}", "{stat}", "{base}.{nam}.tsv"),
@@ -236,7 +236,7 @@ ALL_OUTPUTS.extend(ALL_CHRSTATS)
 # ALL_OUTPUTS.extend(ALL_STATS)
 ALL_OUTPUTS.extend(ALL_PGSTATS)
 ALL_OUTPUTS.extend(ALL_VCF_XGPATHS)
-ALL_OUTPUTS.extend(ALL_HPRC_XGPATHS)
+# ALL_OUTPUTS.extend(ALL_HPRC_XGPATHS)
 # ALL_OUTPUTS.extend(ALL_CONSTRUCT)
 # ALL_OUTPUTS.extend(ALL_TRANSFORM)
 # ALL_OUTPUTS.extend(ALL_SPLIT_GTF)
