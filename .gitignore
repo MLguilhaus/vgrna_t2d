@@ -3,4 +3,5 @@ data/*
 workflow/logs/*
 workflow/slurm/*
 workflow/scripts/notes.sh
+output/mpmap/*.gamp
 
