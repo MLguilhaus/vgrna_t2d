@@ -1,21 +1,28 @@
 rule mpmap:
     input:
         gcsa = expand(
-            os.path.join(index_outpath, "{build}", "{base}.{suffix}"),
-            build = ['chr22'],
-            base = ['chr22'],
+            os.path.join(index_outpath, "{build}", "blackochre", "{base}.{suffix}"),
+            # build = ['chr22'],
+            # base = ['chr22'],
+            build = ['vcf_fa_full'],
+            base = ['hprc-v1.1-mc-grch38-gencode45.spliced'],
             suffix = ['gcsa'],      
+
         ),
         xg = expand(
-            os.path.join(index_outpath, "{build}", "{base}.{suffix}"),
-            build = ['chr22'],
-            base = ['chr22.spliced.htupdated'],
+            os.path.join(index_outpath, "{build}", "blackochre", "{base}.{suffix}"),
+            # build = ['chr22'],
+            # base = ['chr22.spliced.htupdated'],
+            build = ['vcf_fa_full'],
+            base = ['hprc-v1.1-mc-grch38-gencode45.spliced'],
             suffix = ['xg'],      
         ),
         dist = expand(
-            os.path.join(index_outpath, "{build}", "{base}.{suffix}"),
-            build = ['chr22'],
-            base = ['chr22.spliced.htupdated'],
+            os.path.join(index_outpath, "{build}", "blackochre", "{base}.{suffix}"),
+            # build = ['chr22'],
+            # base = ['chr22.spliced.htupdated'],
+            build = ['vcf_fa_full'],
+            base = ['hprc-v1.1-mc-grch38-gencode45.spliced'],
             suffix = ['dist'],        
         ),
         read1 = os.path.join("data", "reads", "{testsample}_1.fastq.gz"),
@@ -27,15 +34,15 @@ rule mpmap:
 
 
     output: 
-        gamp = os.path.join(map_outpath, "{testsample}.gamp")
+        gamp = os.path.join(map_outpath, "{testsample}.full.gamp")
 
     conda: "../envs/vg.yml"
-    log: os.path.join(log_path, "mpmap", "{testsample}.mpmap.log") 
+    log: os.path.join(log_path, "mpmap", "{testsample}.mpmap.full.log") 
     params:
         nt = config['mpmap']['nt_type']
     threads: 32
     resources:
-        runtime = "12h",
+        runtime = "48h",
         mem_mb = 140000,
 
     shell:

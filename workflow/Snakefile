@@ -13,6 +13,7 @@ chrnum = ['chr' + ii for ii in chrs.split()]
 annotationbase = "gencode.v45.primary_assembly.annotation"
 graphbase = "hprc-v1.1-mc-grch38"
 
+
 ## Test SRR 
 testsample = "SRR15881903"
 # , 'SRR15881955', 'SRR15881946', 'SRR15881891
@@ -51,6 +52,7 @@ gtf_rn = os.path.join(
             annotation_outpath, "gencode.v45.primary_assembly.annotation_renamed.gtf")
 map_outpath = os.path.join("output", "mpmap")
 maplog_path = os.path.join("output", "mpmap")
+stats_outpath = os.path.join("output", "stats")
 
 ALL_CONVERT = expand(
 	os.path.join(graph_outpath, "vcf_fa_build", "{chrnum}.{base}.{suffix}"),
@@ -169,9 +171,52 @@ ALL_GCSA = expand(
 )
 
 ALL_MAP = expand(
-	os.path.join(map_outpath, "{sample}.gamp"),
+	os.path.join(map_outpath, "{sample}.full.gamp"),
 	sample = testsample
 )
+
+ALL_CHRSTATS = expand(
+	os.path.join(stats_outpath, "{stat}", "{build}", "{base}.vg.tsv"),
+	build = ['vcf_fa_build'],
+	stat = ['vgstats'],
+	base = chrnum
+)
+
+ALL_PGSTATS = expand(
+	os.path.join(stats_outpath, "{stat}", "{build}", "{base}.{nam}.tsv"),
+	build = ['vcf_fa_build'],
+	stat = ['pgstats'],
+	base = ['chr22'],
+	nam = ['pg']
+)
+
+ALL_VCF_XGPATHS = expand(
+	os.path.join(stats_outpath, "{stat}", "{build}", "{base}.{nam}.tsv"),
+	build = ['vcf_fa_build'],
+	stat = ['xgpaths'],
+	base = ['BODL', 'phoenix'],
+	nam = ['xg']
+)
+
+ALL_HPRC_XGPATHS = expand(
+	os.path.join(stats_outpath, "{stat}", "{build}", "{base}.{nam}.tsv"),
+	build = ['HPRC'],
+	stat = ['xgpaths'],
+	base = ['HPRC'],
+	nam = ['xg']
+)
+
+# ALL_STATS = expand(
+# 	os.path.join(stats_outpath, "{build}", "{stat}", "{base}.{nam}.tsv"),
+# 	build = ['vcf_fa_build'],
+# 	stat = ['pgpaths','xgpaths'],
+# 	base = ['BODL'],
+# 	nam = ['pg','xg']
+# )
+
+
+# 'phoenix', 'DL'
+# , 'HPRC'
 
 ALL_OUTPUTS = []
 ALL_OUTPUTS.extend(ALL_CONVERT)
@@ -187,6 +232,11 @@ ALL_OUTPUTS.extend(ALL_DIST)
 ALL_OUTPUTS.extend(ALL_PRUNE)
 ALL_OUTPUTS.extend(ALL_GCSA)
 ALL_OUTPUTS.extend(ALL_MAP)
+ALL_OUTPUTS.extend(ALL_CHRSTATS)
+# ALL_OUTPUTS.extend(ALL_STATS)
+ALL_OUTPUTS.extend(ALL_PGSTATS)
+ALL_OUTPUTS.extend(ALL_VCF_XGPATHS)
+ALL_OUTPUTS.extend(ALL_HPRC_XGPATHS)
 # ALL_OUTPUTS.extend(ALL_CONSTRUCT)
 # ALL_OUTPUTS.extend(ALL_TRANSFORM)
 # ALL_OUTPUTS.extend(ALL_SPLIT_GTF)
@@ -211,3 +261,4 @@ include: "rules/dist_index.smk"
 include: "rules/prune.smk"
 include: "rules/gcsa_index.smk"
 include: "rules/mpmap.smk"
+include: "rules/stats.smk"

@@ -8,7 +8,7 @@ rule constructvg:
         vg = os.path.join(graph_outpath, "vcf_fa_build", "vg", "{chrnum}." + graphbase + ".vg")
 
     conda: "../envs/vg.yml"
-    log: os.path.join(log_path, "gcsa_index", "{chrnum}.constructvg.log") 
+    log: os.path.join(log_path, "gcsa_index", "{chrnum}.constructvg.log") #change this from gcsa
     threads: 32
     resources:
         runtime = "8h",
