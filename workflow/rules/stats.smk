@@ -1,28 +1,28 @@
 # All stats and paths diagnostics in here, explanations above rules 
 
 # Statistics of graph after building from vcf, fa and gtf
-rule vg_stats:
-    input: 
-        vg = os.path.join(graph_outpath, "vcf_fa_build", "vg", "{chrnum}." + graphbase + ".vg")
+# rule vg_stats:
+#     input: 
+#         vg = os.path.join(graph_outpath, "vcf_fa_build", "vg", "{chrnum}." + graphbase + ".vg")
 
-    output:
-        stats = os.path.join(stats_outpath, "vgstats", "vcf_fa_build", "{chrnum}.vg.tsv"),
+#     output:
+#         stats = os.path.join(stats_outpath, "vgstats", "vcf_fa_build", "{chrnum}.vg.tsv"),
 
-    conda: "../envs/vg.yml"
-    log: os.path.join(log_path, "stats", "{chrnum}.vgstats.log") 
-    threads: 32
-    resources:
-        runtime = "2h",
-        mem_mb = 40000,
+#     conda: "../envs/vg.yml"
+#     log: os.path.join(log_path, "stats", "{chrnum}.vgstats.log") 
+#     threads: 32
+#     resources:
+#         runtime = "2h",
+#         mem_mb = 40000,
 
-    shell: 
-        """
+#     shell: 
+#         """
 
-        vg stats \
-        -z -l -r \
-        {input.vg} > {output.stats}
+#         vg stats \
+#         -z -l -r \
+#         {input.vg} > {output.stats}
 
-        """
+#         """
 
 # Check the conversion from vg to pg retained the same stats (only built for chr22 on Phoenix)
 rule pg_stats:

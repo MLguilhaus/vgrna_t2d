@@ -25,8 +25,8 @@ rule mpmap:
             base = ['hprc-v1.1-mc-grch38-gencode45.spliced'],
             suffix = ['dist'],        
         ),
-        read1 = os.path.join("data", "reads", "{testsample}_1.fastq.gz"),
-        read2 = os.path.join("data", "reads", "{testsample}_2.fastq.gz")
+        read1 = os.path.join("data", "reads", "SRR15881903_1.fastq.gz"),
+        read2 = os.path.join("data", "reads", "SRR15881903_2.fastq.gz")
         # read1 = read1_path,
         # read2 = read2_path
         # read1 = os.path.join(trim_path, "{testsample}_1.fastq.gz"),
@@ -34,10 +34,10 @@ rule mpmap:
 
 
     output: 
-        gamp = os.path.join(map_outpath, "{testsample}.full.gamp")
+        gamp = os.path.join(map_outpath, "SRR15881903.full.gamp")
 
     conda: "../envs/vg.yml"
-    log: os.path.join(log_path, "mpmap", "{testsample}.mpmap.full.log") 
+    log: os.path.join(log_path, "mpmap", "SRR15881903.mpmap.full.log") 
     params:
         nt = config['mpmap']['nt_type']
     threads: 32
