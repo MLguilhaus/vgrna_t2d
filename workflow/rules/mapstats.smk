@@ -12,7 +12,7 @@ rule gamp_convert:
     log: os.path.join(log_path, "mpmap", "{testsample}.gampconvert.log") 
     threads: 32
     resources:
-        runtime = "3h",
+        runtime = "12h",
         mem_mb = 80000,
 
     shell:

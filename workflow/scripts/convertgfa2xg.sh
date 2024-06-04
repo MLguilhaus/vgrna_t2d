@@ -29,5 +29,6 @@ mamba activate /hpcfs/users/a1627307/envs/8a9599ed8d4fd695445e03e783eab8c5_
 # use vg convert to convert the HPRC GFA to an xg to compare to the vcf fa build
 vg convert \
     -g /hpcfs/users/a1627307/genome/hprc-v1.1-mc-grch38.gfa \
-    -x > /hpcfs/users/a1627307/vgrna_t2d/data/index/HPRC/hprc-v1.1-mc-grch38.xg 2>> /hpcfs/users/a1627307/vgrna_t2d/workflow/logs/scripts/convertgfa2xg.log
-    # 2>> ${LOG}
+    -x  > /hpcfs/users/a1627307/genome/hprc-v1.1-mc-grch38.xg 2>> /hpcfs/users/a1627307/vgrna_t2d/workflow/logs/scripts/convertgfa2pg.log
+
+

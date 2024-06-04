@@ -1,0 +1,5 @@
+Run	Age	disease_state   sex subject time
+SRR15881903	63	T2D case	female  8   follow-up
+SRR15881878	62	T2D case	female  8   baseline
+SRR15881958	67	control	female  4   follow-up
+SRR15881925	63	control	female  4   baseline

@@ -15,25 +15,26 @@ graphbase = "hprc-v1.1-mc-grch38"
 
 
 ## Test SRR
-testsample = "SRR15881903" 
+# testsample = ['SRR15881903', 'SRR15881878', 'SRR15881958', 'SRR15881925'] 
+
 # testsample = "SRR15881903"
 # , 'SRR15881955', 'SRR15881946', 'SRR15881891
 # read1_path = ("hpcfs/users/a1627307/star_t2d/star_t2d/data/fastq/trimmed/SRR15881903_1.fastq.gz")
 # read2_path = ("hpcfs/users/a1627307/star_t2d/star_t2d/data/fastq/trimmed/SRR15881903_2.fastq.gz")
 
-## Load samples & set all columns to strings
-df = pd.read_table(config['samples'])
+# ## Load samples & set all columns to strings
+# df = pd.read_table(config['samples'])
 
-## Check there are accessions
-n = len(df.Run)
-assert (n > 0), "No accessions were specified. Please add at least one SRA ID"
+# ## Check there are accessions
+# n = len(df.Run)
+# assert (n > 0), "No accessions were specified. Please add at least one SRA ID"
 
 ## Define key values
-accessions = df.Run
+testsamples = ['SRR15881903', 'SRR15881878', 'SRR15881958', 'SRR15881925']
 
 ## Constrain wildcards
 wildcard_constraints:
-	accession = "(" + '|'.join(accessions) + ")",
+	testsample = "(" + '|'.join(testsamples) + ")",
 
 # All subsequent paths
 gfa_path = ("/hpcfs/users/a1627307/genome/hprc-v1.1-mc-grch38.gfa")
@@ -173,7 +174,7 @@ ALL_GCSA = expand(
 
 ALL_MAP = expand(
 	os.path.join(map_outpath, "{sample}.full.gamp"),
-	sample = testsample
+	sample = testsamples
 )
 
 ALL_CHRSTATS = expand(
@@ -201,14 +202,14 @@ ALL_VCF_XGPATHS = expand(
 
 ALL_GAMPCONV = expand(
 	os.path.join(map_outpath, "{sample}.gam"),
-	sample = testsample
+	sample = testsamples
 )
 
 ALL_MAPSTATS = expand(
 	os.path.join(stats_outpath, "{stat}", "{build}", "{base}.map.tsv"),
 	build = ['vcf_fa_build'],
 	stat = ['mapstats'],
-	base = testsample
+	base = testsamples
 )
 
 # ALL_HPRC_XGPATHS = expand(
