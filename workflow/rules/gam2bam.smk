@@ -23,6 +23,7 @@ rule gam2bam:
         vg surject \
         -t {threads} \
         -x {input.xg} \
+        -i \
         {input.gam} \
         -b > {output.temp_bam} \
         2>> {log} 

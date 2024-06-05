@@ -1,0 +1,15 @@
+Status	output/mpmap/SRR15881903/mpmap.sortedByCoord.bam	output/mpmap/SRR15881878/mpmap.sortedByCoord.bam	output/mpmap/SRR15881958/mpmap.sortedByCoord.bam	output/mpmap/SRR15881925/mpmap.sortedByCoord.bam
+Assigned	11535714	7512516	20430963	8404719
+Unassigned_Unmapped	35387670	22823909	6097434	2291280
+Unassigned_Read_Type	0	0	0	0
+Unassigned_Singleton	0	0	0	0
+Unassigned_MappingQuality	508977748	325041677	19054654	8391617
+Unassigned_Chimera	0	0	0	0
+Unassigned_FragmentLength	0	0	0	0
+Unassigned_Duplicate	0	0	0	0
+Unassigned_MultiMapping	0	0	0	0
+Unassigned_Secondary	0	0	0	0
+Unassigned_NonSplit	0	0	0	0
+Unassigned_NoFeatures	4044346	2654886	34018252	12622662
+Unassigned_Overlapping_Length	4002777	2764908	7350398	3027338
+Unassigned_Ambiguity	763221	560534	4089633	1624892

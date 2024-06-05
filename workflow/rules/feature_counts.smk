@@ -1,4 +1,4 @@
-rule feature_counts_star:
+rule feature_counts:
     input:
         bam = expand(
             os.path.join(map_outpath, "{sample}", "{bam}"),
@@ -16,7 +16,7 @@ rule feature_counts_star:
         counts = os.path.join(fcount_path, "mpmap.counts.out"),
         summary = os.path.join(fcount_path, "mpmap.counts.out.summary")
     conda: "../envs/feature_counts.yml"
-    log: os.path.join(log_path, "feature_counts", "PG_feature_counts.log")
+    log: os.path.join(log_path, "feature_counts", "mpmap.counts.log")
     threads: 16
     resources:
         runtime = "10h",
