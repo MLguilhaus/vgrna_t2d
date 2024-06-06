@@ -55,7 +55,7 @@ gtf_rn = os.path.join(
 map_outpath = os.path.join("output", "mpmap")
 maplog_path = os.path.join("output", "mpmap")
 stats_outpath = os.path.join("output", "stats")
-fcount_path = os.path.join("output", "counts")
+count_path = os.path.join("output", "counts")
 
 
 ALL_CONVERT = expand(
@@ -179,6 +179,11 @@ ALL_MAP = expand(
 	sample = testsamples
 )
 
+ALL_GFAXG = expand(
+	os.path.join(graph_outpath, "{build}", graphbase + ".xg"),
+	build = ['HPRC']
+)
+
 ALL_CHRSTATS = expand(
 	os.path.join(stats_outpath, "{stat}", "{build}", "{base}.vg.tsv"),
 	build = ['vcf_fa_build'],
@@ -214,34 +219,40 @@ ALL_MAPSTATS = expand(
 	base = testsamples
 )
 
-ALL_BAM = expand(
-	os.path.join(map_outpath, "{sample}", "unsorted.bam"),
-	sample = testsamples
-)
-
-ALL_SORTBAM = expand(
-	os.path.join(map_outpath, "{sample}", "mpmap.sortedByCoord.bam"),
-	sample = testsamples
-)
-
-ALL_INDEXBAM = expand(
-	os.path.join(map_outpath, "{sample}", "mpmap.sortedByCoord.{suffix}"),
-	sample = testsamples,
-	suffix = ['bam.bai', 'samtools.flagstat']
-)
-
-ALL_COUNTS = expand(
-	os.path.join(fcount_path, "mpmap.counts.{suffix}"),
-	suffix = ['out', 'out.summary']
-)
-
-# ALL_HPRC_XGPATHS = expand(
-# 	os.path.join(stats_outpath, "{stat}", "{build}", "{base}.{nam}.tsv"),
-# 	build = ['HPRC'],
-# 	stat = ['xgpaths'],
-# 	base = ['HPRC'],
-# 	nam = ['xg']
+# ALL_BAM = expand(
+# 	os.path.join(map_outpath, "{sample}", "unsorted.bam"),
+# 	sample = testsamples
 # )
+
+# ALL_SORTBAM = expand(
+# 	os.path.join(map_outpath, "{sample}", "mpmap.sortedByCoord.bam"),
+# 	sample = testsamples
+# )
+
+# ALL_INDEXBAM = expand(
+# 	os.path.join(map_outpath, "{sample}", "mpmap.sortedByCoord.{suffix}"),
+# 	sample = testsamples,
+# 	suffix = ['bam.bai', 'samtools.flagstat']
+# )
+
+# ALL_COUNTS = expand(
+# 	os.path.join(count_path, "mpmap.counts.{suffix}"),
+# 	suffix = ['out', 'out.summary']
+# )
+
+# ALL_RPVG = expand(
+# 	os.path.join(count_path, "rpvg", "{sample}.rpvg{suffix}"),
+# 	sample = testsamples,
+# 	suffix = ['_joint.txt', '.txt']
+# )
+
+ALL_HPRC_PATHS = expand(
+	os.path.join(stats_outpath, "{stat}", "{build}", "{base}.{nam}.tsv"),
+	build = ['HPRC'],
+	stat = ['xgpaths'],
+	base = ['HPRC'],
+	nam = ['gfa']
+)
 
 # ALL_STATS = expand(
 # 	os.path.join(stats_outpath, "{build}", "{stat}", "{base}.{nam}.tsv"),
@@ -269,17 +280,19 @@ ALL_OUTPUTS.extend(ALL_DIST)
 ALL_OUTPUTS.extend(ALL_PRUNE)
 ALL_OUTPUTS.extend(ALL_GCSA)
 ALL_OUTPUTS.extend(ALL_MAP)
+ALL_OUTPUTS.extend(ALL_GFAXG)
 ALL_OUTPUTS.extend(ALL_CHRSTATS)
 # ALL_OUTPUTS.extend(ALL_STATS)
 ALL_OUTPUTS.extend(ALL_PGSTATS)
 ALL_OUTPUTS.extend(ALL_VCF_XGPATHS)
 ALL_OUTPUTS.extend(ALL_GAMPCONV)
 ALL_OUTPUTS.extend(ALL_MAPSTATS)
-ALL_OUTPUTS.extend(ALL_BAM)
-ALL_OUTPUTS.extend(ALL_SORTBAM)
-ALL_OUTPUTS.extend(ALL_INDEXBAM)
-ALL_OUTPUTS.extend(ALL_COUNTS)
-# ALL_OUTPUTS.extend(ALL_HPRC_XGPATHS)
+# ALL_OUTPUTS.extend(ALL_BAM)
+# ALL_OUTPUTS.extend(ALL_SORTBAM)
+# ALL_OUTPUTS.extend(ALL_INDEXBAM)
+# ALL_OUTPUTS.extend(ALL_COUNTS)
+# ALL_OUTPUTS.extend(ALL_RPVG)
+ALL_OUTPUTS.extend(ALL_HPRC_PATHS)
 # ALL_OUTPUTS.extend(ALL_CONSTRUCT)
 # ALL_OUTPUTS.extend(ALL_TRANSFORM)
 # ALL_OUTPUTS.extend(ALL_SPLIT_GTF)
@@ -304,7 +317,9 @@ include: "rules/dist_index.smk"
 include: "rules/prune.smk"
 include: "rules/gcsa_index.smk"
 include: "rules/mpmap.smk"
+include: "rules/gfa2xg.smk"
 include: "rules/stats.smk"
 include: "rules/mapstats.smk"
-include: "rules/gam2bam.smk"
-include: "rules/feature_counts.smk"
+# include: "rules/gam2bam.smk"
+# include: "rules/feature_counts.smk"
+# include: "rules/rpvg.smk"

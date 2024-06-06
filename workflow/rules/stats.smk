@@ -133,14 +133,15 @@ rule phoenix_xg_paths:
         """
 
 
-rule HPRC_xg_paths:
+rule HPRC_paths:
     input: 
-        xg = os.path.join(
-            index_outpath, "HPRC", "DL", graphbase + "-non-spliced.xg"),
+        # xg = os.path.join(
+        #     index_outpath, "HPRC", "DL", graphbase + "-non-spliced.xg"),
+        gfa = gfa_path
 
     output: 
         paths = os.path.join(
-            stats_outpath, "xgpaths", "HPRC", "HPRC.xg.tsv")
+            stats_outpath, "xgpaths", "HPRC", "HPRC.gfa.tsv")
 
     conda: "../envs/vg.yml"
     log: os.path.join(log_path, "stats", "HPRC.xgpaths.log"),
@@ -154,6 +155,6 @@ rule HPRC_xg_paths:
 
         vg paths \
         -M -x \
-        {input.xg} > {output.paths} 2>> {log}
+        {input.gfa} > {output.paths} 2>> {log}
 
         """

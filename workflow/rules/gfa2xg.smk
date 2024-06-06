@@ -1,4 +1,4 @@
-rule gfa2xgz:
+rule gfa2xg:
     input: 
         gfa = gfa_path,
     output: 
@@ -8,8 +8,8 @@ rule gfa2xgz:
     log: os.path.join(log_path, "gfa2xg", "convert2xg.log"),
     threads: 32
     resources:
-        runtime = "6h",
-        mem_mb = 60000,
+        runtime = "8h",
+        mem_mb = 80000,
     
     shell:
         """
