@@ -31,10 +31,13 @@ graphbase = "hprc-v1.1-mc-grch38"
 
 ## Define key values
 testsamples = ['SRR15881903', 'SRR15881878', 'SRR15881958', 'SRR15881925']
+builds = ['blackochre', 'phoenix']
+        
 
 ## Constrain wildcards
 wildcard_constraints:
 	testsample = "(" + '|'.join(testsamples) + ")",
+	build = "(" + '|'.join(builds) + ")",
 
 # All subsequent paths
 gfa_path = ("/hpcfs/users/a1627307/genome/hprc-v1.1-mc-grch38.gfa")
@@ -219,6 +222,18 @@ ALL_MAPSTATS = expand(
 	base = testsamples
 )
 
+ALL_GRAPHSTATS = expand(
+	os.path.join(stats_outpath, "{stat}", "{build}.graphstats.tsv"),
+	build = builds,
+	stat = ['graph_stats']
+)
+
+ALL_HPRCSTATS = expand(
+	os.path.join(stats_outpath, "{stat}", "{build}.graphstats.tsv"),
+	build = ['HPRC'],
+	stat = ['graph_stats']
+)
+
 # ALL_BAM = expand(
 # 	os.path.join(map_outpath, "{sample}", "unsorted.bam"),
 # 	sample = testsamples
@@ -287,6 +302,8 @@ ALL_OUTPUTS.extend(ALL_PGSTATS)
 ALL_OUTPUTS.extend(ALL_VCF_XGPATHS)
 ALL_OUTPUTS.extend(ALL_GAMPCONV)
 ALL_OUTPUTS.extend(ALL_MAPSTATS)
+ALL_OUTPUTS.extend(ALL_GRAPHSTATS)
+ALL_OUTPUTS.extend(ALL_HPRCSTATS)
 # ALL_OUTPUTS.extend(ALL_BAM)
 # ALL_OUTPUTS.extend(ALL_SORTBAM)
 # ALL_OUTPUTS.extend(ALL_INDEXBAM)

@@ -158,3 +158,50 @@ rule HPRC_paths:
         {input.gfa} > {output.paths} 2>> {log}
 
         """
+
+rule graph_stats:
+    input:
+        graph = os.path.join(
+            index_outpath, "vcf_fa_full", "{build}", graphbase + "-gencode45.spliced.xg"),
+    
+    output: 
+        stats = os.path.join(stats_outpath, "graph_stats", "{build}.graphstats.tsv"),
+
+    conda: "../envs/vg.yml"
+    log: os.path.join(log_path, "stats", "{build}.graphstats.log") 
+    threads: 16
+    resources:
+        runtime = "4h",
+        mem_mb = 40000,
+
+    shell: 
+        """
+
+        vg stats \
+        -z -l -r -L -s -A\
+        {input.graph} > {output.stats}
+
+        """ 
+
+rule HPRC_stats:
+    input:
+        graph = gfa_path
+    
+    output: 
+        stats = os.path.join(stats_outpath, "graph_stats", "HPRC.graphstats.tsv"),
+
+    conda: "../envs/vg.yml"
+    log: os.path.join(log_path, "stats", "HPRC.graphstats.log") 
+    threads: 16
+    resources:
+        runtime = "4h",
+        mem_mb = 40000,
+
+    shell: 
+        """
+
+        vg stats \
+        -z -l -r -L -s -A \
+        {input.graph} > {output.stats}
+
+        """ 
