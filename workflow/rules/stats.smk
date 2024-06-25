@@ -194,14 +194,14 @@ rule HPRC_stats:
     log: os.path.join(log_path, "stats", "HPRC.graphstats.log") 
     threads: 16
     resources:
-        runtime = "4h",
-        mem_mb = 40000,
+        runtime = "6h",
+        mem_mb = 130000,
 
     shell: 
         """
 
         vg stats \
-        -z -l -r -L -s -A \
+        -z -l -r -L -A \
         {input.graph} > {output.stats}
 
         """ 

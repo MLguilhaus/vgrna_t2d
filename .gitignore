@@ -7,3 +7,4 @@ output/mpmap/*
 git-filter-repo
 output/UP_counts/*.out
 output/counts/*
+rpvg

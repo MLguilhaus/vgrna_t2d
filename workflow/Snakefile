@@ -61,212 +61,217 @@ stats_outpath = os.path.join("output", "stats")
 count_path = os.path.join("output", "counts")
 
 
-ALL_CONVERT = expand(
-	os.path.join(graph_outpath, "vcf_fa_build", "{chrnum}.{base}.{suffix}"),
-	chrnum = ['chr22'],
-	base = graphbase,
-	suffix = ['pg']
-)
-
-ALL_INDEX = expand(
-	os.path.join(index_outpath, "chr22", "{base}.spliced.{suffix}"),
-	base = ['chr22.d9'],
-	suffix = ['gcsa', 'xg', 'dist']
-)
-
-ALL_CONSTRUCTVG = expand(
-	os.path.join(graph_outpath, "{build}", "vg", "{chrnum}.{base}.{suffix}"),
-	build = ['vcf_fa_build'],
-	chrnum = chrnum,
-	base = graphbase,
-	suffix = ['vg']
-)
-
-# ALL_CONVERTPG = expand(
-# 	os.path.join(graph_outpath, "{chrnum}.{base}.{suffix}"),
+# ALL_CONVERT = expand(
+# 	os.path.join(graph_outpath, "vcf_fa_build", "{chrnum}.{base}.{suffix}"),
 # 	chrnum = ['chr22'],
 # 	base = graphbase,
 # 	suffix = ['pg']
 # )
 
-# build from vcf/fa naming
-ALL_CONSTRUCTSPL = expand(
-	os.path.join(graph_outpath, "{build}", "{chrnum}.{base}.spliced.{suffix}"),
-	build = ['vcf_fa_build'],
-	chrnum = ['chr22'],
-	base = graphbase,
-	suffix = ['pg']
-)
+# ALL_INDEX = expand(
+# 	os.path.join(index_outpath, "chr22", "{base}.spliced.{suffix}"),
+# 	base = ['chr22.d9'],
+# 	suffix = ['gcsa', 'xg', 'dist']
+# )
 
-# Build from HPRC naming
+# ALL_CONSTRUCTVG = expand(
+# 	os.path.join(graph_outpath, "{build}", "vg", "{chrnum}.{base}.{suffix}"),
+# 	build = ['vcf_fa_build'],
+# 	chrnum = chrnum,
+# 	base = graphbase,
+# 	suffix = ['vg']
+# )
+
+# # ALL_CONVERTPG = expand(
+# # 	os.path.join(graph_outpath, "{chrnum}.{base}.{suffix}"),
+# # 	chrnum = ['chr22'],
+# # 	base = graphbase,
+# # 	suffix = ['pg']
+# # )
+
+# # build from vcf/fa naming
 # ALL_CONSTRUCTSPL = expand(
-# 	os.path.join(graph_outpath, "{chrnum}.d9.spliced.{suffix}"),
+# 	os.path.join(graph_outpath, "{build}", "{chrnum}.{base}.spliced.{suffix}"),
+# 	build = ['vcf_fa_build'],
 # 	chrnum = ['chr22'],
+# 	base = graphbase,
 # 	suffix = ['pg']
 # )
 
-# ALL_CONVERT = expand(
-# 	os.path.join(graph_outpath, graphbase + ".{suffix}"),
-# 	suffix = ['pg']
-# )
+# # Build from HPRC naming
+# # ALL_CONSTRUCTSPL = expand(
+# # 	os.path.join(graph_outpath, "{chrnum}.d9.spliced.{suffix}"),
+# # 	chrnum = ['chr22'],
+# # 	suffix = ['pg']
+# # )
 
-# ALL_CONSTRUCT = expand(
-# 	os.path.join(graph_outpath, "chr22-spliced.{suffix}"),
-# 	suffix = ['pg']
-# )
+# # ALL_CONVERT = expand(
+# # 	os.path.join(graph_outpath, graphbase + ".{suffix}"),
+# # 	suffix = ['pg']
+# # )
 
-# ALL_TRANSFORM = expand(
-# 	os.path.join(annotation_outpath, "{chrnum}." + annotationbase + "_renamed.gtf"),
-# 	chrnum = chrnum
-# )
+# # ALL_CONSTRUCT = expand(
+# # 	os.path.join(graph_outpath, "chr22-spliced.{suffix}"),
+# # 	suffix = ['pg']
+# # )
 
-# ALL_SPLIT_GTF = expand(
+# # ALL_TRANSFORM = expand(
+# # 	os.path.join(annotation_outpath, "{chrnum}." + annotationbase + "_renamed.gtf"),
+# # 	chrnum = chrnum
+# # )
+
+# # ALL_SPLIT_GTF = expand(
+# # 	os.path.join(
+# #             annotation_outpath, "{chrnum}." + annotationbase + ".gtf"),
+# # 	chrnum = chrnum
+# # )
+
+
+# ## Add this in when running out of storage or ready to do rpvg
+# ## OR want to gen pantranscriptome
+# ## need vcf also though. 
+# ### Actualy need this for method 2
+# ALL_HAPL = expand(
 # 	os.path.join(
-#             annotation_outpath, "{chrnum}." + annotationbase + ".gtf"),
-# 	chrnum = chrnum
+# 		index_outpath, "chr22", "chr22.haplotypes.{suffix}"),
+# 		suffix = ['gbwt']
 # )
 
+# ALL_GBWT = expand(
+# 	os.path.join(
+# 		index_outpath, "chr22", "{base}.{suffix}"),
+# 		base = ['chr22'],
+# 		suffix = ['gbwt']
+# )
 
-## Add this in when running out of storage or ready to do rpvg
-## OR want to gen pantranscriptome
-## need vcf also though. 
-### Actualy need this for method 2
-ALL_HAPL = expand(
-	os.path.join(
-		index_outpath, "chr22", "chr22.haplotypes.{suffix}"),
-		suffix = ['gbwt']
-)
+# ALL_XG = expand(
+# 	os.path.join(
+# 			index_outpath, "chr22", "{base}.spliced.htupdated.{suffix}"),
+# 	base = ['chr22'],
+# 	suffix = ['xg']		
+# )
 
-ALL_GBWT = expand(
-	os.path.join(
-		index_outpath, "chr22", "{base}.{suffix}"),
-		base = ['chr22'],
-		suffix = ['gbwt']
-)
+# # add trivial if using for dist, option -s removed?
+# ALL_TRIV = expand(
+# 	os.path.join(
+# 			index_outpath, "chr22", "{base}.snarls"),
+# 	base = ['chr22']	
+# )
 
-ALL_XG = expand(
-	os.path.join(
-			index_outpath, "chr22", "{base}.spliced.htupdated.{suffix}"),
-	base = ['chr22'],
-	suffix = ['xg']		
-)
+# ALL_DIST = expand(
+# 	os.path.join(
+# 			index_outpath, "chr22", "{base}.spliced.htupdated.{suffix}"),
+# 	base = ['chr22'],
+# 	suffix = ['dist']		
+# )
 
-# add trivial if using for dist, option -s removed?
-ALL_TRIV = expand(
-	os.path.join(
-			index_outpath, "chr22", "{base}.snarls"),
-	base = ['chr22']	
-)
+# ALL_PRUNE = expand(
+#     os.path.join(graph_outpath, "{build}", "{chrnum}." + graphbase + ".pruned.vg"),
+#     build = ['vcf_fa_build'],
+#     chrnum = ['chr22']
+# )
 
-ALL_DIST = expand(
-	os.path.join(
-			index_outpath, "chr22", "{base}.spliced.htupdated.{suffix}"),
-	base = ['chr22'],
-	suffix = ['dist']		
-)
+# ALL_GCSA = expand(
+#         os.path.join(index_outpath, "{subdir}", "{chrnum}.gcsa"),
+#         subdir = ['chr22'],
+#         chrnum = ['chr22']
+# )
 
-ALL_PRUNE = expand(
-    os.path.join(graph_outpath, "{build}", "{chrnum}." + graphbase + ".pruned.vg"),
-    build = ['vcf_fa_build'],
-    chrnum = ['chr22']
-)
-
-ALL_GCSA = expand(
-        os.path.join(index_outpath, "{subdir}", "{chrnum}.gcsa"),
-        subdir = ['chr22'],
-        chrnum = ['chr22']
-)
-
-ALL_MAP = expand(
-	os.path.join(map_outpath, "{sample}.full.gamp"),
-	sample = testsamples
-)
-
-ALL_GFAXG = expand(
-	os.path.join(graph_outpath, "{build}", graphbase + ".xg"),
-	build = ['HPRC']
-)
-
-ALL_CHRSTATS = expand(
-	os.path.join(stats_outpath, "{stat}", "{build}", "{base}.vg.tsv"),
-	build = ['vcf_fa_build'],
-	stat = ['vgstats'],
-	base = chrnum
-)
-
-ALL_PGSTATS = expand(
-	os.path.join(stats_outpath, "{stat}", "{build}", "{base}.{nam}.tsv"),
-	build = ['vcf_fa_build'],
-	stat = ['pgstats'],
-	base = ['chr22'],
-	nam = ['pg']
-)
-
-ALL_VCF_XGPATHS = expand(
-	os.path.join(stats_outpath, "{stat}", "{build}", "{base}.{nam}.tsv"),
-	build = ['vcf_fa_build'],
-	stat = ['xgpaths'],
-	base = ['BODL', 'phoenix'],
-	nam = ['xg']
-)
-
-ALL_GAMPCONV = expand(
-	os.path.join(map_outpath, "{sample}.gam"),
-	sample = testsamples
-)
-
-ALL_MAPSTATS = expand(
-	os.path.join(stats_outpath, "{stat}", "{build}", "{base}.map.tsv"),
-	build = ['vcf_fa_build'],
-	stat = ['mapstats'],
-	base = testsamples
-)
-
-ALL_GRAPHSTATS = expand(
-	os.path.join(stats_outpath, "{stat}", "{build}.graphstats.tsv"),
-	build = builds,
-	stat = ['graph_stats']
-)
-
-ALL_HPRCSTATS = expand(
-	os.path.join(stats_outpath, "{stat}", "{build}.graphstats.tsv"),
-	build = ['HPRC'],
-	stat = ['graph_stats']
-)
-
-# ALL_BAM = expand(
-# 	os.path.join(map_outpath, "{sample}", "unsorted.bam"),
+# ALL_MAP = expand(
+# 	os.path.join(map_outpath, "{sample}.full.gamp"),
 # 	sample = testsamples
 # )
 
-# ALL_SORTBAM = expand(
-# 	os.path.join(map_outpath, "{sample}", "mpmap.sortedByCoord.bam"),
+# ALL_GFAXG = expand(
+# 	os.path.join(graph_outpath, "{build}", graphbase + ".xg"),
+# 	build = ['HPRC']
+# )
+
+# ALL_CHRSTATS = expand(
+# 	os.path.join(stats_outpath, "{stat}", "{build}", "{base}.vg.tsv"),
+# 	build = ['vcf_fa_build'],
+# 	stat = ['vgstats'],
+# 	base = chrnum
+# )
+
+# ALL_PGSTATS = expand(
+# 	os.path.join(stats_outpath, "{stat}", "{build}", "{base}.{nam}.tsv"),
+# 	build = ['vcf_fa_build'],
+# 	stat = ['pgstats'],
+# 	base = ['chr22'],
+# 	nam = ['pg']
+# )
+
+# ALL_VCF_XGPATHS = expand(
+# 	os.path.join(stats_outpath, "{stat}", "{build}", "{base}.{nam}.tsv"),
+# 	build = ['vcf_fa_build'],
+# 	stat = ['xgpaths'],
+# 	base = ['BODL', 'phoenix'],
+# 	nam = ['xg']
+# )
+
+# ALL_GAMPCONV = expand(
+# 	os.path.join(map_outpath, "{sample}.gam"),
 # 	sample = testsamples
 # )
 
-# ALL_INDEXBAM = expand(
-# 	os.path.join(map_outpath, "{sample}", "mpmap.sortedByCoord.{suffix}"),
-# 	sample = testsamples,
-# 	suffix = ['bam.bai', 'samtools.flagstat']
+# ALL_MAPSTATS = expand(
+# 	os.path.join(stats_outpath, "{stat}", "{build}", "{base}.map.tsv"),
+# 	build = ['vcf_fa_build'],
+# 	stat = ['mapstats'],
+# 	base = testsamples
 # )
 
-# ALL_COUNTS = expand(
-# 	os.path.join(count_path, "mpmap.counts.{suffix}"),
-# 	suffix = ['out', 'out.summary']
+# ALL_GRAPHSTATS = expand(
+# 	os.path.join(stats_outpath, "{stat}", "{build}.graphstats.tsv"),
+# 	build = builds,
+# 	stat = ['graph_stats']
 # )
 
-# ALL_RPVG = expand(
-# 	os.path.join(count_path, "rpvg", "{sample}.rpvg{suffix}"),
-# 	sample = testsamples,
-# 	suffix = ['_joint.txt', '.txt']
+# ALL_HPRCSTATS = expand(
+# 	os.path.join(stats_outpath, "{stat}", "{build}.graphstats.tsv"),
+# 	build = ['HPRC'],
+# 	stat = ['graph_stats']
 # )
 
-ALL_HPRC_PATHS = expand(
-	os.path.join(stats_outpath, "{stat}", "{build}", "{base}.{nam}.tsv"),
-	build = ['HPRC'],
-	stat = ['xgpaths'],
-	base = ['HPRC'],
-	nam = ['gfa']
+# # ALL_BAM = expand(
+# # 	os.path.join(map_outpath, "{sample}", "unsorted.bam"),
+# # 	sample = testsamples
+# # )
+
+# # ALL_SORTBAM = expand(
+# # 	os.path.join(map_outpath, "{sample}", "mpmap.sortedByCoord.bam"),
+# # 	sample = testsamples
+# # )
+
+# # ALL_INDEXBAM = expand(
+# # 	os.path.join(map_outpath, "{sample}", "mpmap.sortedByCoord.{suffix}"),
+# # 	sample = testsamples,
+# # 	suffix = ['bam.bai', 'samtools.flagstat']
+# # )
+
+# # ALL_COUNTS = expand(
+# # 	os.path.join(count_path, "mpmap.counts.{suffix}"),
+# # 	suffix = ['out', 'out.summary']
+# # )
+
+# # ALL_RPVG = expand(
+# # 	os.path.join(count_path, "rpvg", "{sample}.rpvg{suffix}"),
+# # 	sample = testsamples,
+# # 	suffix = ['_joint.txt', '.txt']
+# # )
+
+# ALL_HPRC_PATHS = expand(
+# 	os.path.join(stats_outpath, "{stat}", "{build}", "{base}.{nam}.tsv"),
+# 	build = ['HPRC'],
+# 	stat = ['xgpaths'],
+# 	base = ['HPRC'],
+# 	nam = ['gfa']
+# )
+
+ALL_DOT = expand(
+	os.path.join("output", "BODLgraph.dot"),
+	
 )
 
 # ALL_STATS = expand(
@@ -282,37 +287,38 @@ ALL_HPRC_PATHS = expand(
 # , 'HPRC'
 
 ALL_OUTPUTS = []
-ALL_OUTPUTS.extend(ALL_CONVERT)
-# ALL_OUTPUTS.extend(ALL_INDEX)
-ALL_OUTPUTS.extend(ALL_CONSTRUCTVG)
-# ALL_OUTPUTS.extend(ALL_CONVERTPG)
-ALL_OUTPUTS.extend(ALL_CONSTRUCTSPL)
-ALL_OUTPUTS.extend(ALL_HAPL)
-ALL_OUTPUTS.extend(ALL_GBWT)
-ALL_OUTPUTS.extend(ALL_XG)
-ALL_OUTPUTS.extend(ALL_TRIV)
-ALL_OUTPUTS.extend(ALL_DIST)
-ALL_OUTPUTS.extend(ALL_PRUNE)
-ALL_OUTPUTS.extend(ALL_GCSA)
-ALL_OUTPUTS.extend(ALL_MAP)
-ALL_OUTPUTS.extend(ALL_GFAXG)
-ALL_OUTPUTS.extend(ALL_CHRSTATS)
-# ALL_OUTPUTS.extend(ALL_STATS)
-ALL_OUTPUTS.extend(ALL_PGSTATS)
-ALL_OUTPUTS.extend(ALL_VCF_XGPATHS)
-ALL_OUTPUTS.extend(ALL_GAMPCONV)
-ALL_OUTPUTS.extend(ALL_MAPSTATS)
-ALL_OUTPUTS.extend(ALL_GRAPHSTATS)
-ALL_OUTPUTS.extend(ALL_HPRCSTATS)
-# ALL_OUTPUTS.extend(ALL_BAM)
-# ALL_OUTPUTS.extend(ALL_SORTBAM)
-# ALL_OUTPUTS.extend(ALL_INDEXBAM)
-# ALL_OUTPUTS.extend(ALL_COUNTS)
-# ALL_OUTPUTS.extend(ALL_RPVG)
-ALL_OUTPUTS.extend(ALL_HPRC_PATHS)
-# ALL_OUTPUTS.extend(ALL_CONSTRUCT)
-# ALL_OUTPUTS.extend(ALL_TRANSFORM)
-# ALL_OUTPUTS.extend(ALL_SPLIT_GTF)
+# ALL_OUTPUTS.extend(ALL_CONVERT)
+# # ALL_OUTPUTS.extend(ALL_INDEX)
+# ALL_OUTPUTS.extend(ALL_CONSTRUCTVG)
+# # ALL_OUTPUTS.extend(ALL_CONVERTPG)
+# ALL_OUTPUTS.extend(ALL_CONSTRUCTSPL)
+# ALL_OUTPUTS.extend(ALL_HAPL)
+# ALL_OUTPUTS.extend(ALL_GBWT)
+# ALL_OUTPUTS.extend(ALL_XG)
+# ALL_OUTPUTS.extend(ALL_TRIV)
+# ALL_OUTPUTS.extend(ALL_DIST)
+# ALL_OUTPUTS.extend(ALL_PRUNE)
+# ALL_OUTPUTS.extend(ALL_GCSA)
+# ALL_OUTPUTS.extend(ALL_MAP)
+# ALL_OUTPUTS.extend(ALL_GFAXG)
+# ALL_OUTPUTS.extend(ALL_CHRSTATS)
+# # ALL_OUTPUTS.extend(ALL_STATS)
+# ALL_OUTPUTS.extend(ALL_PGSTATS)
+# ALL_OUTPUTS.extend(ALL_VCF_XGPATHS)
+# ALL_OUTPUTS.extend(ALL_GAMPCONV)
+# ALL_OUTPUTS.extend(ALL_MAPSTATS)
+# ALL_OUTPUTS.extend(ALL_GRAPHSTATS)
+# ALL_OUTPUTS.extend(ALL_HPRCSTATS)
+# # ALL_OUTPUTS.extend(ALL_BAM)
+# # ALL_OUTPUTS.extend(ALL_SORTBAM)
+# # ALL_OUTPUTS.extend(ALL_INDEXBAM)
+# # ALL_OUTPUTS.extend(ALL_COUNTS)
+# # ALL_OUTPUTS.extend(ALL_RPVG)
+# ALL_OUTPUTS.extend(ALL_HPRC_PATHS)
+# # ALL_OUTPUTS.extend(ALL_CONSTRUCT)
+# # ALL_OUTPUTS.extend(ALL_TRANSFORM)
+# # ALL_OUTPUTS.extend(ALL_SPLIT_GTF)
+ALL_OUTPUTS.extend(ALL_DOT)
 
 
 
@@ -320,23 +326,24 @@ rule all:
 	input:
 		ALL_OUTPUTS
 
-include: "rules/convert.smk"
-include: "rules/autoindex.smk"
-include: "rules/constructvg.smk"
+# include: "rules/convert.smk"
+# include: "rules/autoindex.smk"
+# include: "rules/constructvg.smk"
 # include: "rules/convertpg.smk"
-include: "rules/constructspl.smk"
+# include: "rules/constructspl.smk"
 # include: "rules/construct.smk"
 # include: "rules/transform_gtf.smk"
 # include: "rules/subset.smk"
-include: "rules/gbwt_index.smk"
-include: "rules/xg_index.smk"
-include: "rules/dist_index.smk"
-include: "rules/prune.smk"
-include: "rules/gcsa_index.smk"
-include: "rules/mpmap.smk"
-include: "rules/gfa2xg.smk"
-include: "rules/stats.smk"
-include: "rules/mapstats.smk"
+# include: "rules/gbwt_index.smk"
+# include: "rules/xg_index.smk"
+# include: "rules/dist_index.smk"
+# include: "rules/prune.smk"
+# include: "rules/gcsa_index.smk"
+# include: "rules/mpmap.smk"
+# include: "rules/gfa2xg.smk"
+# include: "rules/stats.smk"
+# include: "rules/mapstats.smk"
 # include: "rules/gam2bam.smk"
 # include: "rules/feature_counts.smk"
 # include: "rules/rpvg.smk"
+include: "rules/viewgraph.smk"
